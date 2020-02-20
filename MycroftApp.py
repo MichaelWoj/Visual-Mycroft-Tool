@@ -1,32 +1,64 @@
 import tkinter as tk
 from tkinter import * 
-from tkinter import ttk
+from  tkinter import ttk
 import os, subprocess
 
-root = Tk()
+root = tk.Tk()
 
 root.title('Mycroft Skill Maker')
-root.configure(background = "white")
-root.minsize(1000, 500)
+root.geometry("1000x500")
+
+canvas = Canvas(root, width=800, height=500, bg="white")
 
 style = ttk.Style(root)
+style.configure('lefttab.TNotebook', tabposition='w')
+style.theme_settings("default", {"TNotebook.Tab": {"configure": {"padding": [30, 40]}}})
+notebook = ttk.Notebook(root, style='lefttab.TNotebook', width=200, height=500 )
 
-style.configure('lefttab.TNotebook', tabposition='ws')
-style.theme_settings("default", {"TNotebook.Tab": {"configure": {"padding": [30, 30]}}})
-notebook = ttk.Notebook(root, style='lefttab.TNotebook')
+t1 = tk.Frame(notebook, bg='red')
+t2 = tk.Frame(notebook, bg='blue')
+t3 = tk.Frame(notebook, bg='green')
+t4 = tk.Frame(notebook, bg='yellow')
+t5 = tk.Frame(notebook, bg='purple')
 
-f1 = tk.Frame(notebook, bg='red', width=400, height=500)
-f2 = tk.Frame(notebook, bg='blue', width=400, height=500)
-f3 = tk.Frame(notebook, bg='green', width=400, height=500)
-f4 = tk.Frame(notebook, bg='yellow', width=400, height=500)
-f5 = tk.Frame(notebook, bg='purple', width=400, height=500)
+notebook.add(t1, text='Tab 1')
+notebook.add(t2, text='Tab 2')
+notebook.add(t3, text='Tab 3')
+notebook.add(t4, text='Tab 4')
+notebook.add(t5, text='Tab 5')
+notebook.grid(column = 0)
 
-notebook.add(f1, text='Frame 1')
-notebook.add(f2, text='Frame 2')
-notebook.add(f3, text='Frame 3')
-notebook.add(f4, text='Frame 4')
-notebook.add(f5, text='Frame 5')
-notebook.pack()
+t1_canvas = Canvas(t1, width=200, height=500, bg='red')
+t2_canvas = Canvas(t2, width=200, height=500, bg='blue')
+t3_canvas = Canvas(t3, width=200, height=500)
+t4_canvas = Canvas(t4, width=200, height=500)
+t5_canvas = Canvas(t5, width=200, height=500)
 
+#def leftClick(event):
+
+def callback(event):
+	draw(event.x, event.y)
+
+def draw(x, y):
+	canvas.coords(circle, x-20, y-20, x+20, y+20)
+	
+
+canvas.bind('<Motion>', callback)
+
+
+circle = canvas.create_oval(20, 20, 100, 100)
+canvas.grid(row =0, column = 1)
+
+t1_points1 = [20, 20, 20, 100, 100, 100, 100, 80, 120, 80, 120, 40, 100, 40, 100, 20 ]
+t1_shape1 = t1_canvas.create_polygon(t1_points1, outline='#000', fill='#7e2530', width=2)
+t1_canvas.grid(column = 1)
+
+t2_points1 = [20, 20, 20, 40, 40, 40, 40, 80, 20, 80, 20, 100, 100, 100, 100, 80, 120, 60, 100, 40, 100, 20]
+t2_shape1 = t2_canvas.create_polygon(t2_points1, outline='#000', fill='#003153', width=2)
+t2_canvas.grid(column = 1)
+
+t2_points2 = [20, 120, 20, 140, 40, 160, 20, 180, 20, 200, 100, 200, 100, 180, 120, 160, 100, 140, 100, 120]
+t2_shape2 = t2_canvas.create_polygon(t2_points2, outline='#000', fill='#003153', width=2)
+t2_canvas.grid(column = 1)
 
 root.mainloop()
