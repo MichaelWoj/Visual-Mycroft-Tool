@@ -13,11 +13,12 @@ canvas = Canvas(root, width=800, height=500, bg="white")
 
 def select_file_button():
 	global folder_path
-	filename = filedialog.askdirectory()
+	filename = filedialog.askopenfile(title="Select Your New Skill __init__ File", filetypes=(("Python Files", "*.py"), ("All Files", "*.*")))
 	folder_path.set(filename)
 	print(filename)
 
-os.system("gnome-terminal -e 'bash -c \"cd ..; cd mycroft-core; mycroft-msk create; exec bash\"'")
+def new_project_button():
+	os.system("gnome-terminal -e 'bash -c \"cd ..; cd mycroft-core; mycroft-msk create; exec bash\"'")
 
 menu = Menu(root)
 root.config(menu=menu)
@@ -25,7 +26,7 @@ root.config(menu=menu)
 subMenu = Menu(menu)
 menu.add_cascade(label="Settings", menu=subMenu)
 subMenu.add_command(label="Save")
-subMenu.add_command(label="New Project")
+subMenu.add_command(label="New Project", command= new_project_button)
 subMenu.add_command(label="Select File", command= select_file_button)
 subMenu.add_command(label="Help")
 subMenu.add_command(label="Exit", command= root.quit)
