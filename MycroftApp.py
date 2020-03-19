@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import * 
-from  tkinter import ttk
+from tkinter import ttk
+from tkinter import filedialog
 import os, subprocess
 
 root = tk.Tk()
@@ -9,6 +10,25 @@ root.title('Mycroft Skill Maker')
 root.geometry("1000x500")
 
 canvas = Canvas(root, width=800, height=500, bg="white")
+
+def select_file_button():
+	global folder_path
+	filename = filedialog.askdirectory()
+	folder_path.set(filename)
+	print(filename)
+
+os.system("gnome-terminal -e 'bash -c \"cd ..; cd mycroft-core; mycroft-msk create; exec bash\"'")
+
+menu = Menu(root)
+root.config(menu=menu)
+
+subMenu = Menu(menu)
+menu.add_cascade(label="Settings", menu=subMenu)
+subMenu.add_command(label="Save")
+subMenu.add_command(label="New Project")
+subMenu.add_command(label="Select File", command= select_file_button)
+subMenu.add_command(label="Help")
+subMenu.add_command(label="Exit", command= root.quit)
 
 style = ttk.Style(root)
 style.configure('lefttab.TNotebook', tabposition='w')
@@ -44,7 +64,6 @@ def draw(x, y):
 	
 
 canvas.bind('<Motion>', callback)
-
 
 circle = canvas.create_oval(20, 20, 100, 100)
 canvas.grid(row =0, column = 1)
