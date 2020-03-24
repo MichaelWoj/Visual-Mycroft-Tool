@@ -14,11 +14,15 @@ canvas = Canvas(root, width=800, height=500, bg="white")
 def select_file_button():
 	global folder_path
 	filename = filedialog.askopenfile(title="Select Your New Skill __init__ File", filetypes=(("Python Files", "*.py"), ("All Files", "*.*")))
-	folder_path.set(filename)
-	print(filename)
+	#openfile = open(filename, 'a')
+	#folder_path.set(filename)
+	#print(filename)
 
 def new_project_button():
 	os.system("gnome-terminal -e 'bash -c \"cd ..; cd mycroft-core; mycroft-msk create; exec bash\"'")
+
+def clear_all():
+	canvas.delete("all")
 
 menu = Menu(root)
 root.config(menu=menu)
@@ -30,6 +34,9 @@ subMenu.add_command(label="New Project", command= new_project_button)
 subMenu.add_command(label="Select File", command= select_file_button)
 subMenu.add_command(label="Help")
 subMenu.add_command(label="Exit", command= root.quit)
+menu.add_command(label="Clear All", command= clear_all)
+#menu.add_command(label="Undo", command= canvas.)
+#menu.add_command(label="Redo", command= canvas.)
 
 style = ttk.Style(root)
 style.configure('lefttab.TNotebook', tabposition='w')
@@ -55,14 +62,16 @@ t3_canvas = Canvas(t3, width=200, height=500)
 t4_canvas = Canvas(t4, width=200, height=500)
 t5_canvas = Canvas(t5, width=200, height=500)
 
-#def leftClick(event):
-
 def callback(event):
 	draw(event.x, event.y)
 
 def draw(x, y):
 	canvas.coords(circle, x-20, y-20, x+20, y+20)
-	
+
+def t1_shape1_code():
+	openfile = open(filename, 'a')
+	print("Hello there")
+	openfile.close()	
 
 canvas.bind('<Motion>', callback)
 
@@ -80,5 +89,6 @@ t2_canvas.grid(column = 1)
 t2_points2 = [20, 120, 20, 140, 40, 160, 20, 180, 20, 200, 100, 200, 100, 180, 120, 160, 100, 140, 100, 120]
 t2_shape2 = t2_canvas.create_polygon(t2_points2, outline='#000', fill='#003153', width=2)
 t2_canvas.grid(column = 1)
+
 
 root.mainloop()
