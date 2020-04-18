@@ -31,22 +31,15 @@ def clear_all():
 menu = Menu(root)
 root.config(menu=menu)
 
-
 subMenu = Menu(menu)
 
 ## Creates a submenu for multiple buttons to be hidden in it 
 menu.add_cascade(label="Settings", menu=subMenu)
-subMenu.add_command(label="Save")
-
 ## Create a button in the submenu called New Project and sets new_project_button as the code to be executed
 subMenu.add_command(label="New Project", command= new_project_button)
 subMenu.add_command(label="Select File", command= select_file_button)
-subMenu.add_command(label="Help")
 subMenu.add_command(label="Exit", command= root.quit)
 menu.add_command(label="Clear All", command= clear_all)
-#menu.add_command(label="Undo", command= folder_path.edit_undo)
-#menu.add_command(label="Redo", command= folder_path.edit.redo)
-
  
 style = ttk.Style(root)
 
@@ -54,7 +47,7 @@ style = ttk.Style(root)
 style.configure('lefttab.TNotebook', tabposition='w')
 
 ## Sets the theme and side of the tab buttons
-style.theme_settings("default", {"TNotebook.Tab": {"configure": {"padding": [30, 40]}}})
+style.theme_settings("default", {"TNotebook.Tab": {"configure": {"padding": [20, 40]}}})
 
 ## The notebook style is set and assigned to a variable name 
 notebook = ttk.Notebook(root, style='lefttab.TNotebook' )
@@ -65,9 +58,9 @@ t2 = tk.Frame(notebook)
 t3 = tk.Frame(notebook)
 
 ## Creates the side tabs
-notebook.add(t1, text='Start')
-notebook.add(t2, text='Middle')
-notebook.add(t3, text='Ending ')
+notebook.add(t1, text='Imports   ')
+notebook.add(t2, text='Functions')
+notebook.add(t3, text='Endings   ')
 ## Sets all of the side tab location to column 0 
 notebook.grid(column = 0)
 ## The side tabs are chaned into canvases allowing shapes to be created on them. The canvas size and colour are set and tabs are assigned.
@@ -86,8 +79,6 @@ t2_points1 = [20, 20, 20, 40, 40, 40, 40, 80, 20, 80, 20, 100, 100, 100, 100, 80
 t2_shape1 = t2_canvas.create_polygon(t2_points1, outline='#000', fill='#003153', width=2)
 t2_canvas.grid(column = 1)
 
-#t2_points2 = [20, 120, 20, 140, 40, 160, 20, 180, 20, 200, 100, 200, 100, 180, 120, 160, 100, 140, 100, 120]
-
 t3_points1 = [20, 20, 20, 40, 40, 60, 20, 80, 20, 100, 100, 100, 100, 20]
 t3_shape1 = t3_canvas.create_polygon(t3_points1, outline='#000', fill='#00630d', width=2)
 t3_canvas.grid(column = 1)
@@ -101,7 +92,7 @@ def t1_button1_code(self):
 
 	for import_line in fileinput.FileInput(folder_path.name, inplace=1):
 		if 'from mycroft import MycroftSkill, intent_file_handler' in import_line:
-			import_line = import_line.replace(import_line,import_line+'from adapt.intent import IntentBuilder \nimport datetime ')
+			import_line = import_line.replace(import_line,import_line+'from adapt.intent import IntentBuilder \nimport datetime \n')
 		print(import_line, end='')
 
 
@@ -112,15 +103,17 @@ def t2_button1_code(self):
 
 	canvas.create_polygon(t2_points1, outline='#000', fill='#003153', width=2)
 	canvas.grid(row= 0, column = 3)
-
+## A for loop to go through the file. 
+##"folder_path" is given a .name to convert it to a string.
+## Inplace=1 allows us to override the file
 	for function_line in fileinput.FileInput(folder_path.name, inplace=1):
 		if '(self, message):' in function_line:
+			##When the wanted line is found it clears the line, then reprents it with the added string
 			function_line = function_line.replace(function_line,function_line+'        now = datetime.datetime.now()\n')
 		print(function_line, end='')
 
 	for function_output_line in fileinput.FileInput(folder_path.name, inplace=1):
 		if 'self.speak_dialog' in function_output_line:
-				#print(function_output_line.replace(')', '', 1))
 				function_output_line = function_output_line.replace(')','+ now.strftime(" %Y-%m-%d %H:%M:%S"))')
 		print(function_output_line, end='')
 
@@ -133,9 +126,8 @@ def t3_button1_code(self):
 
 	for ending_line in fileinput.FileInput(folder_path.name, inplace=1):
 		if 'now.strftime(" %Y-%m-%d %H:%M:%S"))' in ending_line:
-				ending_line = ending_line.replace(ending_line,ending_line+'\n    def stop(self):\n         pass')
+				ending_line = ending_line.replace(ending_line,ending_line+'\n    def stop(self):\n         pass\n')
 		print(ending_line, end='')
-
 
 
 t3_canvas.tag_bind(t3_shape1, "<Button-1>", t3_button1_code)
