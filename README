@@ -1,0 +1,17 @@
+Hello and thank you for downloading the Visual Development Tool for Mycroft, here is a quick walkthrough to get you started.
+
+Step 1. Activation
+
+To activate the application go to " MycroftProject " ("cd MycroftProject") or however you named the folder and in your command prompt type in " python3 MycroftApp.py" to run. 
+
+Step 2. Start a new project. 
+
+In order to start a new project go to " Settings " and click on " New Project ". This will open up a command prompt with a short questionnaire which will create the template for your skill.
+
+Step 3. Select the project file.
+
+After you created your skill template, click " Select File " in the " Settings " menu. This will open up a window that will let you select the skill you wish to edit. If you don't know where your skill is, go to " mycroft-core " and check in the Skills folder. Once you find your skill select the " __init__.py " file and confirm
+
+Step 4. Create your skill.
+
+Once you have done the previous steps, click on the blocks that fit the description of the skill you wish to create. The code is saved automatically to the file when you click on the block.
