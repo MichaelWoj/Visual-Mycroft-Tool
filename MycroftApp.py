@@ -1,10 +1,9 @@
-import tkinter as tk
 from tkinter import * 
 from tkinter import ttk
 from tkinter import filedialog
 import os, subprocess, fileinput, subprocess
 
-root = tk.Tk()
+root = Tk()
 
 root.title('Mycroft Skill Maker')
 root.geometry("1000x500")
@@ -32,6 +31,11 @@ def help_button():
 def clear_all():
 	canvas.delete("all")
 
+point_adjustor = 0 
+def point_mover():
+	global point_adjustor
+	point_adjustor = point_adjustor + 80
+	return 
 
 ## Sets up the TKinter menu
 menu = Menu(root)
@@ -62,9 +66,9 @@ style.theme_settings("default", {"TNotebook.Tab": {"configure": {"padding": [20,
 notebook = ttk.Notebook(root, style='lefttab.TNotebook' )
 
 ## Tab frame created and assigned a variable name  
-t1 = tk.Frame(notebook)
-t2 = tk.Frame(notebook)
-t3 = tk.Frame(notebook)
+t1 = Frame(notebook)
+t2 = Frame(notebook)
+t3 = Frame(notebook)
 
 # Creates the side tabs
 notebook.add(t1, text='Imports   ')
@@ -79,40 +83,64 @@ t3_canvas = Canvas(t3, width=200, height=500, bg='green')
 
 ## The points represent the x and y axis of the canvas and each 2 points a point where the line stops.
 ## Eg if you take the first 6 points [20, 20, 20, 100, 100, 100]. This means the line starts at 20, 20 and goes to 20, 100 and from that point it turns to 100, 100 to make another point there
-t1_points1 = [20, 20, 20, 100, 100, 100, 100, 80, 120, 80, 120, 40, 100, 40, 100, 20 ]
+t1_points1 = [20+point_adjustor, 20, 20+point_adjustor, 100, 100+point_adjustor, 100, 100+point_adjustor, 80, 120+point_adjustor, 80, 120+point_adjustor, 40, 100+point_adjustor, 40, 100+point_adjustor, 20 ]
 ## shape is created by taking the pre-established points and specifying the shape's border and inside colour as well as border width.
 t1_shape1 = t1_canvas.create_polygon(t1_points1, outline='#000', fill='#7e2530', width=2)
-t1_canvas.grid(column = 1)
+t1_canvas.grid(column = 0)
 
 t2_points1 = [20, 20, 20, 40, 40, 40, 40, 80, 20, 80, 20, 100, 100, 100, 100, 80, 120, 60, 100, 40, 100, 20]
 t2_shape1 = t2_canvas.create_polygon(t2_points1, outline='#000', fill='#003153', width=2)
-t2_canvas.grid(column = 1)
+t2_canvas.grid(column = 0)
+
+t2_points2 = [20, 120, 20, 140, 40, 160, 20, 180, 20, 200, 100, 200, 100, 180, 120, 160, 100, 140, 100, 120]
+t2_shape2 = t2_canvas.create_polygon(t2_points2, outline='#000', fill='#003153', width=2)
+t2_canvas.grid(column = 0)
 
 t3_points1 = [20, 20, 20, 40, 40, 60, 20, 80, 20, 100, 100, 100, 100, 20]
 t3_shape1 = t3_canvas.create_polygon(t3_points1, outline='#000', fill='#00630d', width=2)
-t3_canvas.grid(column = 1)
-
+t3_canvas.grid(column = 0)
 ## Function with code assigned for the first button
+
+canvas.grid(row = 0, column = 1, columnspan = 8, rowspan = 8 )
+
 def t1_button1_code(self):
 
+	global t1_shape1_on_canvas
+
+	if t1_shape1_on_canvas = True 
+
 	## The buttons shape is reproduced on the main canvas 
-	canvas.create_polygon(t1_points1, outline='#000', fill='#7e2530', width=2)
-	canvas.grid(row= 0, column = 2)
+	t1_points1_on_canvas = [20+point_adjustor, 20, 20+point_adjustor, 100, 100+point_adjustor, 100, 100+point_adjustor, 80, 120+point_adjustor, 80, 120+point_adjustor, 40, 100+point_adjustor, 40, 100+point_adjustor, 20 ]
+	t1_shape1_on_canvas = canvas.create_polygon(t1_points1_on_canvas, outline='#000', fill='#7e2530', width=2)
 
 	for import_line in fileinput.FileInput(folder_path.name, inplace=1):
 		if 'from mycroft import MycroftSkill, intent_file_handler' in import_line:
 			import_line = import_line.replace(import_line,import_line+'from adapt.intent import IntentBuilder \nimport datetime \n')
 		print(import_line, end='')
-
-
-# When the left mouse button is clicked on the shape it executes t1_button1_code
+# When the left mouse button is clicked on the shape it executes t1_button1_code 
+	point_mover()
 t1_canvas.tag_bind(t1_shape1, "<Button-1>", t1_button1_code)
 
+def t1_button_shape1_removal(self):
+	
+	for import_line in fileinput.FileInput(folder_path.name, inplace=1):
+		if 'from adapt.intent import IntentBuilder' in import_line:
+			import_line = import_line.replace(import_line,'')
+		print(import_line, end='')
+
+	for import_line in fileinput.FileInput(folder_path.name, inplace=1):
+		if 'import datetime'in import_line:
+			import_line = import_line.replace(import_line,'')
+		print(import_line, end='')
+	
+	canvas.delete(t1_shape1_on_canvas)
+
+t1_canvas.tag_bind(t1_shape1, "<Button-3>", t1_button_shape1_removal)
 
 def t2_button1_code(self):
 
+	t2_points1 = [20+point_adjustor, 20, 20+point_adjustor, 40, 40+point_adjustor, 40, 40+point_adjustor, 80, 20+point_adjustor, 80, 20+point_adjustor, 100, 100+point_adjustor, 100, 100+point_adjustor, 80, 120+point_adjustor, 60, 100+point_adjustor, 40, 100+point_adjustor, 20]
 	canvas.create_polygon(t2_points1, outline='#000', fill='#003153', width=2)
-	canvas.grid(row= 0, column = 3)
 
 # A for loop to go through the file. 
 #"folder_path" is given a .name to convert it to a string.
@@ -128,19 +156,23 @@ def t2_button1_code(self):
 				function_output_line = function_output_line.replace(')','+ now.strftime(" %Y-%m-%d %H:%M:%S"))')
 		print(function_output_line, end='')
 
+	point_mover()
 t2_canvas.tag_bind(t2_shape1, "<Button-1>", t2_button1_code)
 
-def t3_button1_code(self):
+def t2_button2_code(self):
+	canvas.create_polygon(t2_points2, outline='#000', fill='#003153', width=2)
+t2_canvas.tag_bind(t2_shape2, "<Button-1>", t2_button2_code)
 
+def t3_button1_code(self):
+	t3_points1 = [20+point_adjustor, 20, 20+point_adjustor, 40, 40+point_adjustor, 60, 20+point_adjustor, 80, 20+point_adjustor, 100, 100+point_adjustor, 100, 100+point_adjustor, 20]
 	canvas.create_polygon(t3_points1, outline='#000', fill='#00630d', width=2)
-	canvas.grid(row= 0, column = 4)
 
 	for ending_line in fileinput.FileInput(folder_path.name, inplace=1):
 		if 'now.strftime(" %Y-%m-%d %H:%M:%S"))' in ending_line:
 				ending_line = ending_line.replace(ending_line,ending_line+'\n    def stop(self):\n         pass\n')
 		print(ending_line, end='')
 
-
+	point_mover()
 t3_canvas.tag_bind(t3_shape1, "<Button-1>", t3_button1_code)
 
 root.mainloop()
