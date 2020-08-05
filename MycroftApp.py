@@ -204,7 +204,7 @@ def t4_button1_code(self):
 	canvas.create_polygon(t4_points1, outline='#000', fill='#7d12c4', width=2)
 
 	to_replace = 'statement'
-	replacement = '\tif variablename symobl userinput :\n'
+	replacement = '\tif variablename symobol userinput :\n'
 
 	line_replece(to_replace,replacement)
 
@@ -213,8 +213,8 @@ t4_canvas.tag_bind(t4_shape1, "<Button-1>", t4_button1_code)
 def t5_button1_code(self):
 	canvas.create_polygon(t5_points1, outline='#000', fill='#a6a005', width=2)
 
-	to_replace = ' x y z '
-	replacement = 'now.hour y z and now.minute y z'
+	to_replace = ' variablename symobl userinput '
+	replacement = 'now.hour symobol userinput and now.minute symobol userinput'
 
 	line_replece(to_replace,replacement)
 t4_canvas.tag_bind(t4_shape1, "<Button-1>", t4_button1_code)
