@@ -27,15 +27,37 @@ def help_button():
 	opener = "open" if sys.platform == "dawrin" else "xdg-open"
 	subprocess.call([opener, "README"])
 
-## Function to clear the canvas when called
-def clear_all():
-	canvas.delete("all")
-
 point_adjustor = 0 
 def point_mover():
 	global point_adjustor
 	point_adjustor = point_adjustor + 80
 	return 
+
+def line_editor(line_to_edit, what_to_edit, the_edit):
+	for import_line in fileinput.FileInput(folder_path.name, inplace=1):
+		if line_to_edit in import_line:
+			import_line = import_line.replace(what_to_edit,the_edit)
+		print(import_line, end='')
+	
+
+def line_replece(to_replace, replacement):
+	for function_line in fileinput.FileInput(folder_path.name, inplace=1):
+		if to_replace in function_line:
+			#When the wanted line is found it clears the line, then reprents it with the added string
+			function_line = function_line.replace(function_line,replacement)
+		print(function_line, end='')
+
+def line_addition(what_to_find, what_to_add):		
+	for import_line in fileinput.FileInput(folder_path.name, inplace=1):
+		if what_to_find in import_line:
+			import_line = import_line.replace(import_line,import_line+what_to_add)
+		print(import_line, end='')
+
+def line_deletion(delete_this):
+	for function_line in fileinput.FileInput(folder_path.name, inplace=1):
+		if delete_this in function_line:
+			function_line = function_line.replace(function_line,'')
+		print(function_line, end='')
 
 ## Sets up the TKinter menu
 menu = Menu(root)
@@ -52,7 +74,6 @@ subMenu.add_command(label="New Project", command= new_project_button)
 subMenu.add_command(label="Select File", command= select_file_button)
 subMenu.add_command(label="Exit", command= root.quit)
 menu.add_command(label="Help", command= help_button)
-menu.add_command(label="Clear All", command= clear_all)
  
 style = ttk.Style(root)
 
@@ -69,18 +90,22 @@ notebook = ttk.Notebook(root, style='lefttab.TNotebook' )
 t1 = Frame(notebook)
 t2 = Frame(notebook)
 t3 = Frame(notebook)
-
+t4 = Frame(notebook)
+t5 = Frame(notebook)
 # Creates the side tabs
-notebook.add(t1, text='Imports   ')
-notebook.add(t2, text='Functions')
-notebook.add(t3, text='Endings   ')
+notebook.add(t1, text='Imports     ')
+notebook.add(t2, text='Functions  ')
+notebook.add(t3, text='Endings     ')
+notebook.add(t4, text='Input         ')
+notebook.add(t5, text='Statement')
 ## Sets the specified UI position in the Y axis 
 notebook.grid(column = 0)
 ## The side tabs are chaned into canvases allowing shapes to be created on them. The canvas size and colour are set and tabs are assigned.
 t1_canvas = Canvas(t1, width=200, height=500, bg='red')
 t2_canvas = Canvas(t2, width=200, height=500, bg='blue')
 t3_canvas = Canvas(t3, width=200, height=500, bg='green')
-
+t4_canvas = Canvas(t4, width=200, height=500, bg='purple')
+t5_canvas = Canvas(t5, width=200, height=500, bg='yellow')
 ## The points represent the x and y axis of the canvas and each 2 points a point where the line stops.
 ## Eg if you take the first 6 points [20, 20, 20, 100, 100, 100]. This means the line starts at 20, 20 and goes to 20, 100 and from that point it turns to 100, 100 to make another point there
 t1_points1 = [20+point_adjustor, 20, 20+point_adjustor, 100, 100+point_adjustor, 100, 100+point_adjustor, 80, 120+point_adjustor, 80, 120+point_adjustor, 40, 100+point_adjustor, 40, 100+point_adjustor, 20 ]
@@ -101,38 +126,40 @@ t3_shape1 = t3_canvas.create_polygon(t3_points1, outline='#000', fill='#00630d',
 t3_canvas.grid(column = 0)
 ## Function with code assigned for the first button
 
+t4_points1 = [20, 20, 20, 40, 40, 60, 20, 80, 20, 100, 100, 100, 100, 20]
+t4_shape1 = t4_canvas.create_polygon(t4_points1, outline='#000', fill='#7d12c4', width=2)
+t4_canvas.grid(column = 0)
+
+t5_points1 = [20, 20, 20, 40, 40, 40, 40, 80, 20, 80, 20, 100, 100, 100, 100, 80, 120, 60, 100, 40, 100, 20]
+t5_shape1 = t5_canvas.create_polygon(t5_points1, outline='#000', fill='#a6a005', width=2)
+t5_canvas.grid(column = 0)
+
 canvas.grid(row = 0, column = 1, columnspan = 8, rowspan = 8 )
 
 def t1_button1_code(self):
 
 	global t1_shape1_on_canvas
 
-	if t1_shape1_on_canvas = True 
-
 	## The buttons shape is reproduced on the main canvas 
 	t1_points1_on_canvas = [20+point_adjustor, 20, 20+point_adjustor, 100, 100+point_adjustor, 100, 100+point_adjustor, 80, 120+point_adjustor, 80, 120+point_adjustor, 40, 100+point_adjustor, 40, 100+point_adjustor, 20 ]
 	t1_shape1_on_canvas = canvas.create_polygon(t1_points1_on_canvas, outline='#000', fill='#7e2530', width=2)
 
-	for import_line in fileinput.FileInput(folder_path.name, inplace=1):
-		if 'from mycroft import MycroftSkill, intent_file_handler' in import_line:
-			import_line = import_line.replace(import_line,import_line+'from adapt.intent import IntentBuilder \nimport datetime \n')
-		print(import_line, end='')
+	what_to_find = 'from mycroft import MycroftSkill, intent_file_handler'
+	what_to_add = 'from adapt.intent import IntentBuilder \nimport datetime \n'
+
+	line_addition(what_to_find,what_to_add)
 # When the left mouse button is clicked on the shape it executes t1_button1_code 
 	point_mover()
 t1_canvas.tag_bind(t1_shape1, "<Button-1>", t1_button1_code)
 
 def t1_button_shape1_removal(self):
 	
-	for import_line in fileinput.FileInput(folder_path.name, inplace=1):
-		if 'from adapt.intent import IntentBuilder' in import_line:
-			import_line = import_line.replace(import_line,'')
-		print(import_line, end='')
-
-	for import_line in fileinput.FileInput(folder_path.name, inplace=1):
-		if 'import datetime'in import_line:
-			import_line = import_line.replace(import_line,'')
-		print(import_line, end='')
+	delete_this ='from adapt.intent import IntentBuilder'
+	line_deletion(delete_this)
 	
+	delete_this ='import datetime'
+	line_deletion(delete_this)
+
 	canvas.delete(t1_shape1_on_canvas)
 
 t1_canvas.tag_bind(t1_shape1, "<Button-3>", t1_button_shape1_removal)
@@ -142,19 +169,17 @@ def t2_button1_code(self):
 	t2_points1 = [20+point_adjustor, 20, 20+point_adjustor, 40, 40+point_adjustor, 40, 40+point_adjustor, 80, 20+point_adjustor, 80, 20+point_adjustor, 100, 100+point_adjustor, 100, 100+point_adjustor, 80, 120+point_adjustor, 60, 100+point_adjustor, 40, 100+point_adjustor, 20]
 	canvas.create_polygon(t2_points1, outline='#000', fill='#003153', width=2)
 
-# A for loop to go through the file. 
-#"folder_path" is given a .name to convert it to a string.
-# Inplace=1 allows us to override the file
-	for function_line in fileinput.FileInput(folder_path.name, inplace=1):
-		if '(self, message):' in function_line:
-			#When the wanted line is found it clears the line, then reprents it with the added string
-			function_line = function_line.replace(function_line,function_line+'        now = datetime.datetime.now()\n')
-		print(function_line, end='')
+	t2_points1 = [20+point_adjustor, 20, 20+point_adjustor, 40, 40+point_adjustor, 40, 40+point_adjustor, 80, 20+point_adjustor, 80, 20+point_adjustor, 100, 100+point_adjustor, 100, 100+point_adjustor, 80, 120+point_adjustor, 60, 100+point_adjustor, 40, 100+point_adjustor, 20]
+	canvas.create_polygon(t2_points1, outline='#000', fill='#003153', width=2)
 
-	for function_output_line in fileinput.FileInput(folder_path.name, inplace=1):
-		if 'self.speak_dialog' in function_output_line:
-				function_output_line = function_output_line.replace(')','+ now.strftime(" %Y-%m-%d %H:%M:%S"))')
-		print(function_output_line, end='')
+	what_to_find = '(self, message):'
+	what_to_add = '\tnow = datetime.datetime.now()\n\tstatement\n'
+	line_addition(what_to_find, what_to_add)
+
+	line_to_edit = 'self.speak_dialog'
+	what_to_edit =')'
+	the_edit = '+ now.strftime(" %Y-%m-%d %H:%M:%S"))'
+	line_editor(line_to_edit, what_to_edit, the_edit)
 
 	point_mover()
 t2_canvas.tag_bind(t2_shape1, "<Button-1>", t2_button1_code)
@@ -167,12 +192,31 @@ def t3_button1_code(self):
 	t3_points1 = [20+point_adjustor, 20, 20+point_adjustor, 40, 40+point_adjustor, 60, 20+point_adjustor, 80, 20+point_adjustor, 100, 100+point_adjustor, 100, 100+point_adjustor, 20]
 	canvas.create_polygon(t3_points1, outline='#000', fill='#00630d', width=2)
 
-	for ending_line in fileinput.FileInput(folder_path.name, inplace=1):
-		if 'now.strftime(" %Y-%m-%d %H:%M:%S"))' in ending_line:
-				ending_line = ending_line.replace(ending_line,ending_line+'\n    def stop(self):\n         pass\n')
-		print(ending_line, end='')
+	what_to_find = 'now.strftime(" %Y-%m-%d %H:%M:%S"))'
+	what_to_add = '\n\tdef stop(self):\n\t\tpass\n'
+
+	line_addition(what_to_find, what_to_add)
 
 	point_mover()
 t3_canvas.tag_bind(t3_shape1, "<Button-1>", t3_button1_code)
 
-root.mainloop()
+def t4_button1_code(self):
+	canvas.create_polygon(t4_points1, outline='#000', fill='#7d12c4', width=2)
+
+	to_replace = 'statement'
+	replacement = '\tif variablename symobl userinput :\n'
+
+	line_replece(to_replace,replacement)
+
+t4_canvas.tag_bind(t4_shape1, "<Button-1>", t4_button1_code)
+
+def t5_button1_code(self):
+	canvas.create_polygon(t5_points1, outline='#000', fill='#a6a005', width=2)
+
+	to_replace = ' x y z '
+	replacement = 'now.hour y z and now.minute y z'
+
+	line_replece(to_replace,replacement)
+t4_canvas.tag_bind(t4_shape1, "<Button-1>", t4_button1_code)
+
+root.mainloop()	
