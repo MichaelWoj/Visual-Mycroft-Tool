@@ -1,6 +1,8 @@
 from tkinter import * 
 from tkinter import ttk
 from tkinter import filedialog
+from tkinter import simpledialog
+from datetime import datetime
 import os, subprocess, fileinput, subprocess
 
 root = Tk()
@@ -134,6 +136,10 @@ t5_points1 = [20, 20, 20, 40, 40, 40, 40, 80, 20, 80, 20, 100, 100, 100, 100, 80
 t5_shape1 = t5_canvas.create_polygon(t5_points1, outline='#000', fill='#a6a005', width=2)
 t5_canvas.grid(column = 0)
 
+t5_points2 = [20, 120, 20, 140, 40, 160, 20, 180, 20, 200, 100, 200, 100, 180, 120, 160, 100, 140, 100, 120]
+t5_shape2 = t5_canvas.create_polygon(t5_points2, outline='#000', fill='#00630d', width=2)
+t5_canvas.grid(column = 0)
+
 canvas.grid(row = 0, column = 1, columnspan = 8, rowspan = 8 )
 
 def t1_button1_code(self):
@@ -145,7 +151,7 @@ def t1_button1_code(self):
 	t1_shape1_on_canvas = canvas.create_polygon(t1_points1_on_canvas, outline='#000', fill='#7e2530', width=2)
 
 	what_to_find = 'from mycroft import MycroftSkill, intent_file_handler'
-	what_to_add = 'from adapt.intent import IntentBuilder \nimport datetime \n'
+	what_to_add = 'from adapt.intent import IntentBuilder \nfrom datetime import datetime\n'
 
 	line_addition(what_to_find,what_to_add)
 # When the left mouse button is clicked on the shape it executes t1_button1_code 
@@ -173,13 +179,17 @@ def t2_button1_code(self):
 	canvas.create_polygon(t2_points1, outline='#000', fill='#003153', width=2)
 
 	what_to_find = '(self, message):'
-	what_to_add = '\tnow = datetime.datetime.now()\n\tstatement\n'
+	what_to_add = '        now = datetime.now().time()\n        #ifstatement\n'
 	line_addition(what_to_find, what_to_add)
 
 	line_to_edit = 'self.speak_dialog'
 	what_to_edit =')'
 	the_edit = '+ now.strftime(" %Y-%m-%d %H:%M:%S"))'
 	line_editor(line_to_edit, what_to_edit, the_edit)
+
+	what_to_find = 'now.strftime(" %Y-%m-%d %H:%M:%S"))'
+	what_to_add = '        #elsestatement\n'
+	line_addition(what_to_find, what_to_add)
 
 	point_mover()
 t2_canvas.tag_bind(t2_shape1, "<Button-1>", t2_button1_code)
@@ -193,7 +203,7 @@ def t3_button1_code(self):
 	canvas.create_polygon(t3_points1, outline='#000', fill='#00630d', width=2)
 
 	what_to_find = 'now.strftime(" %Y-%m-%d %H:%M:%S"))'
-	what_to_add = '\n\tdef stop(self):\n\t\tpass\n'
+	what_to_add = '\n    def stop(self):\n        pass\n'
 
 	line_addition(what_to_find, what_to_add)
 
@@ -203,20 +213,58 @@ t3_canvas.tag_bind(t3_shape1, "<Button-1>", t3_button1_code)
 def t4_button1_code(self):
 	canvas.create_polygon(t4_points1, outline='#000', fill='#7d12c4', width=2)
 
-	to_replace = 'statement'
-	replacement = '\tif variablename symobol userinput :\n'
+	to_replace = '#ifstatement'
+	replacement = '        if variablename symbol userinput:\n'
 
 	line_replece(to_replace,replacement)
+
+	what_to_find = 'if variablename symbol userinput'
+	what_to_add = '    '
+
+	line_addition(what_to_find,what_to_add)
 
 t4_canvas.tag_bind(t4_shape1, "<Button-1>", t4_button1_code)
 
 def t5_button1_code(self):
 	canvas.create_polygon(t5_points1, outline='#000', fill='#a6a005', width=2)
 
-	to_replace = ' variablename symobl userinput '
-	replacement = 'now.hour symobol userinput and now.minute symobol userinput'
+	line_to_edit = 'if variablename symbol userinput:'
+	what_to_edit ='variablename symbol userinput:'
+	the_edit = 'now.hour symbol user_input_hour and now.minute symbol user_input_minute:'
 
-	line_replece(to_replace,replacement)
-t4_canvas.tag_bind(t4_shape1, "<Button-1>", t4_button1_code)
+	line_editor(line_to_edit, what_to_edit, the_edit)
+t5_canvas.tag_bind(t5_shape1, "<Button-1>", t5_button1_code)
+
+def t5_button2_code(self):
+	canvas.create_polygon(t5_points2, outline='#000', fill='#a6a005', width=2)
+
+	user_inp = simpledialog.askstring("Time Input","Please enter time in HH:MM format")
+
+	user_input_hour,user_input_minute = user_inp.split(':')
+
+	if user_input_hour  is None:
+		print ('Incorrect hour value')
+		return 	
+
+	elif user_input_minute is None:
+		print ('Incorrect minute vlaue')
+		return
+
+	else: 
+
+		line_to_edit = 'user_input_hour'
+		what_to_edit ='user_input_hour'
+		the_edit = user_input_hour
+
+		line_editor(line_to_edit, what_to_edit, the_edit)
+
+		line_to_edit = 'user_input_minute'
+		what_to_edit ='user_input_minute'
+		the_edit = user_input_minute
+
+		line_editor(line_to_edit, what_to_edit, the_edit)
+		
+t5_canvas.tag_bind(t5_shape2, "<Button-1>", t5_button2_code)
+
 
 root.mainloop()	
