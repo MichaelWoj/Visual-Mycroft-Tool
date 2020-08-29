@@ -66,6 +66,11 @@ def argument_point_mover():
 		argument_block_tally = argument_block_tally + 1
 	return	
 
+def argument_point_remover():
+	argument_point_adjustor = argument_point_adjustor - 60 
+	argument_block_tally = argument_block_tally - 1
+	return	
+
 def line_editor(line_to_edit, what_to_edit, the_edit):
 	for import_line in fileinput.FileInput(folder_path.name, inplace=1):
 		if line_to_edit in import_line:
@@ -151,7 +156,7 @@ t6_canvas.grid(row=2, sticky="W")
 #t6_canvas = Canvas(t6, width=1200, height=50, bg='blue')
 ## The points represent the x and y axis of the canvas and each 2 points a point where the line stops.
 ## Eg if you take the first 6 points [20, 20, 20, 100, 100, 100]. This means the line starts at 20, 20 and goes to 20, 100 and from that point it turns to 100, 100 to make another point there
-t1_block1 = PhotoImage(file="images/Imports/t1_block1.png")
+t1_block1 = PhotoImage(file="images/Imports/ImportDateTime.png")
 ## shape is created by taking the pre-established points and specifying the shape's border and inside colour as well as border width.
 t1_shape1 = t1_canvas.create_image(100, 50, image = t1_block1)
 t1_canvas.grid(column = 0)
@@ -258,7 +263,7 @@ def t1_button1_code(self):
 	point_mover(size_variant)
 t1_canvas.tag_bind(t1_shape1, "<Button-1>", t1_button1_code)
 
-def t1_button_shape1_removal(self):
+def t1_button1_removal(self):
 	
 	delete_this ='from adapt.intent import IntentBuilder'
 	line_deletion(delete_this)
@@ -267,10 +272,13 @@ def t1_button_shape1_removal(self):
 	line_deletion(delete_this)
 
 	canvas.delete(t1_shape1_on_canvas)
-
-t1_canvas.tag_bind(t1_shape1, "<Button-3>", t1_button_shape1_removal)
+	size_variant = -340
+	point_mover(size_variant)
+t1_canvas.tag_bind(t1_shape1, "<Button-3>", t1_button1_removal)
 
 def t2_button1_code(self):
+
+	global t2_shape1_on_canvas
 
 	t2_points1_on_canvas = [70+point_adjustor, 250]
 	t2_shape1_on_canvas = canvas.create_image(t2_points1_on_canvas, image = t2_block1)
@@ -283,7 +291,22 @@ def t2_button1_code(self):
 	point_mover(size_variant)
 t2_canvas.tag_bind(t2_shape1, "<Button-1>", t2_button1_code)
 
+def t2_button1_removal(self):
+	
+	delete_this ='now = datetime.now().time()'
+	line_deletion(delete_this)
+	
+	delete_this ='#ifstatement'
+	line_deletion(delete_this)
+
+	canvas.delete(t2_shape1_on_canvas)
+	size_variant = -349
+	point_mover(size_variant)
+t2_canvas.tag_bind(t2_shape1, "<Button-3>", t2_button1_removal)
+
 def t2_button2_code(self):
+
+	global t2_shape2_on_canvas
 
 	t2_points2_on_canvas = [70+point_adjustor, 250]
 	t2_shape2_on_canvas = canvas.create_image(t2_points2_on_canvas, image = t2_block2)
@@ -296,9 +319,27 @@ def t2_button2_code(self):
 	point_mover(size_variant)
 t2_canvas.tag_bind(t2_shape2, "<Button-1>", t2_button2_code)	
 
+def t2_button2_removal(self):
+	
+	delete_this ='CurrentDate = date.today()'
+	line_deletion(delete_this)
+	
+	delete_this ='#dateprep'
+	line_deletion(delete_this)
+
+	delete_this ='#ifstatement'
+	line_deletion(delete_this)
+
+	canvas.delete(t2_shape2_on_canvas)
+	size_variant = -349
+	point_mover(size_variant)
+t2_canvas.tag_bind(t2_shape2, "<Button-3>", t2_button2_removal)
+
 def t3_row1_button1_code(self):
 
 	argument_point_mover()
+
+	global t3_row1_shape1_on_canvas
 
 	t3_row1_points1_on_canvas = [150+argument_point_adjustor, 250]
 	t3_row1_shape1_on_canvas = canvas.create_image(t3_row1_points1_on_canvas, image = t3_row1_block1)
@@ -309,6 +350,18 @@ def t3_row1_button1_code(self):
 	line_editor(line_to_edit, what_to_edit, the_edit)
 
 t3_canvas.tag_bind(t3_row1_shape1, "<Button-1>", t3_row1_button1_code)
+
+def t3_row1_button1_removal(self):
+	
+	argument_point_remover()
+
+	line_to_edit = 'if now.hour symbol user_input_hour and now.minute symbol user_input_minute:'
+	what_to_edit ='now.hour symbol user_input_hour and now.minute symbol user_input_minute:'
+	the_edit = 'variablename symbol userinput'
+	line_editor(line_to_edit, what_to_edit, the_edit)
+
+	canvas.delete(t3_row1_shape1_on_canvas)
+t3_canvas.tag_bind(t3_row1_shape1, "<Button-3>", t3_row1_button1_removal)
 
 def t3_row1_button2_code(self):
 
@@ -632,6 +685,8 @@ t4_canvas.tag_bind(t4_shape2, "<Button-1>", t4_button2_code)
 def t5_button1_code(self):
 	statement_block_tally()
 
+	global t5_shape1_on_canvas
+
 	t5_points1_on_canvas = [150+point_adjustor, 250]
 	t5_shape1_on_canvas = canvas.create_image(t5_points1_on_canvas, image = t5_block1)
 
@@ -652,8 +707,27 @@ def t5_button1_code(self):
 	point_mover(size_variant)
 t5_canvas.tag_bind(t5_shape1, "<Button-1>", t5_button1_code)
 
+def t5_button1_removal(self):
+	
+	to_replace = 'if variablename symbol userinput:'
+	replacement = '        #ifstatement\n'
+	line_replece(to_replace,replacement)
+
+	delete_this ='elsestatement'
+	line_deletion(delete_this)
+
+	delete_this ='#response'
+	line_deletion(delete_this)
+
+	canvas.delete(t5_shape1_on_canvas)
+	size_variant = -509
+	point_mover(size_variant)
+t5_canvas.tag_bind(t5_shape1, "<Button-3>", t5_button1_removal)
+
 def t5_button2_code(self):
 	statement_block_tally()
+
+	global t5_shape2_on_canvas
 
 	t5_points_on_canvas = [150+point_adjustor, 250]
 	t5_shape2_on_canvas = canvas.create_image(t5_points_on_canvas, image = t5_block2)
@@ -679,11 +753,30 @@ def t5_button2_code(self):
 	point_mover(size_variant)
 t5_canvas.tag_bind(t5_shape2, "<Button-1>", t5_button2_code)
 
+def t5_button2_removal(self):
+	
+	delete_this ='#response'
+	line_deletion(delete_this)
+
+	to_replace = 'elif variablename symbol userinput:'
+	replacement = '        #response\n'
+	line_replece(to_replace,replacement)
+
+	canvas.delete(t5_shape2_on_canvas)
+	size_variant = -509
+	point_mover(size_variant)
+t5_canvas.tag_bind(t5_shape2, "<Button-3>", t5_button2_removal)
+
 def t5_button3_code(self):
 	statement_block_tally()
 
+	global t5_shape3_on_canvas
+
 	t5_points3_on_canvas = [70+point_adjustor, 250]
 	t5_shape3_on_canvas = canvas.create_image(t5_points3_on_canvas, image = t5_block3)
+
+	delete_this ='#response'
+	line_deletion(delete_this)	
 
 	to_replace = '#elsestatement'
 	replacement = '        else:\n'
@@ -697,5 +790,19 @@ def t5_button3_code(self):
 	size_variant = -171
 	point_mover(size_variant)
 t5_canvas.tag_bind(t5_shape3, "<Button-1>", t5_button3_code)
+
+def t5_button3_removal(self):
+	
+	delete_this ='#response'
+	line_deletion(delete_this)
+
+	to_replace = 'else:'
+	replacement = '       #response\n       #elsestatement\n'
+	line_replece(to_replace,replacement)
+
+	canvas.delete(t5_shape3_on_canvas)
+	size_variant = -509
+	point_mover(size_variant)
+t5_canvas.tag_bind(t5_shape3, "<Button-3>", t5_button3_removal)
 
 root.mainloop()	
