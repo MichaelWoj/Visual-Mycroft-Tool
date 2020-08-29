@@ -164,44 +164,56 @@ t2_block2 = PhotoImage(file="images/Functions/GetCurrentDate.png")
 t2_shape2 = t2_canvas.create_image(100, 150, image = t2_block2)
 t2_canvas.grid(column = 0)
 
-t3_row1_block1 = PhotoImage(file="images/Argument/CurrentTimeDiamond.png")
+t3_row1_block1 = PhotoImage(file="images/Argument/Diamond/CurrentTimeDiamond.png")
 t3_row1_shape1 = t3_canvas.create_image(50, 50, image = t3_row1_block1)
 t3_canvas.grid(column = 0)
 
-t3_row1_block2 = PhotoImage(file="images/Argument/CurrentDateDiamond.png")
+t3_row1_block2 = PhotoImage(file="images/Argument/Diamond/CurrentDateDiamond.png")
 t3_row1_shape2 = t3_canvas.create_image(50, 100, image = t3_row1_block2)
 t3_canvas.grid(column = 0)
 
-t3_row2_block1 = PhotoImage(file="images/Argument/EqualToPentagon.png")
+t3_row1_block3 = PhotoImage(file="images/Argument/Diamond/CurrentDateAndTimeDiamond.png")
+t3_row1_shape3 = t3_canvas.create_image(50, 150, image = t3_row1_block3)
+t3_canvas.grid(column = 0)
+
+t3_row2_block1 = PhotoImage(file="images/Argument/Pentagon/EqualToPentagon.png")
 t3_row2_shape1 = t3_canvas.create_image(100, 50, image = t3_row2_block1)
 t3_canvas.grid(column = 0)
 
-t3_row2_block2 = PhotoImage(file="images/Argument/IsEqualToPentagon.png")
+t3_row2_block2 = PhotoImage(file="images/Argument/Pentagon/IsEqualToPentagon.png")
 t3_row2_shape2 = t3_canvas.create_image(100, 100, image = t3_row2_block2)
 t3_canvas.grid(column = 0)
 
-t3_row2_block3 = PhotoImage(file="images/Argument/LessThanPentagon.png")
+t3_row2_block3 = PhotoImage(file="images/Argument/Pentagon/LessThanPentagon.png")
 t3_row2_shape3 = t3_canvas.create_image(100, 150, image = t3_row2_block3)
 t3_canvas.grid(column = 0)
 
-t3_row2_block4 = PhotoImage(file="images/Argument/GreaterThanPentagon.png")
+t3_row2_block4 = PhotoImage(file="images/Argument/Pentagon/GreaterThanPentagon.png")
 t3_row2_shape4 = t3_canvas.create_image(100, 200, image = t3_row2_block4)
 t3_canvas.grid(column = 0)
 
-t3_row2_block5 = PhotoImage(file="images/Argument/PlusPentagon.png")
+t3_row2_block5 = PhotoImage(file="images/Argument/Pentagon/PlusPentagon.png")
 t3_row2_shape5 = t3_canvas.create_image(100, 250, image = t3_row2_block5)
 t3_canvas.grid(column = 0)
 
-t3_row2_block6 = PhotoImage(file="images/Argument/MinusPentagon.png")
+t3_row2_block6 = PhotoImage(file="images/Argument/Pentagon/MinusPentagon.png")
 t3_row2_shape6 = t3_canvas.create_image(100, 300, image = t3_row2_block6)
 t3_canvas.grid(column = 0)
 
-t3_row3_block1 = PhotoImage(file="images/Argument/UserSetTimeHexagon.png")
+t3_row2_block7 = PhotoImage(file="images/Argument/Pentagon/NotEqualToPentagon.png")
+t3_row2_shape7 = t3_canvas.create_image(100, 350, image = t3_row2_block7)
+t3_canvas.grid(column = 0)
+
+t3_row3_block1 = PhotoImage(file="images/Argument/Hexagon/UserSetTimeHexagon.png")
 t3_row3_shape1 = t3_canvas.create_image(150, 50, image = t3_row3_block1)
 t3_canvas.grid(column = 0)
 
-t3_row3_block2 = PhotoImage(file="images/Argument/UserSetDateHexagon.png")
+t3_row3_block2 = PhotoImage(file="images/Argument/Hexagon/UserSetDateHexagon.png")
 t3_row3_shape2 = t3_canvas.create_image(150, 100, image = t3_row3_block2)
+t3_canvas.grid(column = 0)
+
+t3_row3_block3 = PhotoImage(file="images/Argument/Hexagon/UserSetDateAndTimeHexagon.png")
+t3_row3_shape3 = t3_canvas.create_image(150, 150, image = t3_row3_block3)
 t3_canvas.grid(column = 0)
 
 t4_block1 = PhotoImage(file="images/Response/CustomResponseSentence.png")
@@ -312,6 +324,19 @@ def t3_row1_button2_code(self):
 
 t3_canvas.tag_bind(t3_row1_shape2, "<Button-1>", t3_row1_button2_code)
 
+def t3_row1_button3_code(self):
+
+	argument_point_mover()
+
+	t3_row1_points3_on_canvas = [150+argument_point_adjustor, 250]
+	t3_row1_shape3_on_canvas = canvas.create_image(t3_row1_points3_on_canvas, image = t3_row1_block3)
+
+	line_to_edit = 'if variablename symbol userinput:'
+	what_to_edit ='variablename'
+	the_edit = 'now.hour symbol user_input_hour and now.minute symbol user_input_minute and CurrentDate'
+	line_editor(line_to_edit, what_to_edit, the_edit)
+
+t3_canvas.tag_bind(t3_row1_shape3, "<Button-1>", t3_row1_button3_code)
 
 def t3_row2_button1_code(self):
 
@@ -407,6 +432,23 @@ def t3_row2_button6_code(self):
 
 
 t3_canvas.tag_bind(t3_row2_shape6, "<Button-1>", t3_row2_button6_code)
+
+def t3_row2_button7_code(self):
+
+	argument_point_mover()
+
+	t3_row2_points7_on_canvas = [150+argument_point_adjustor, 250]
+	t3_row2_shape7_on_canvas = canvas.create_image(t3_row2_points7_on_canvas, image = t3_row2_block7)
+
+	line_to_edit = 'symbol'
+	what_to_edit ='symbol'
+	the_edit = '!='
+
+	line_editor(line_to_edit, what_to_edit, the_edit)
+
+
+t3_canvas.tag_bind(t3_row2_shape7, "<Button-1>", t3_row2_button7_code)
+
 def t3_row3_button1_code(self):
 
 	argument_point_mover()
@@ -469,6 +511,60 @@ def t3_row3_button2_code(self):
 	line_editor(line_to_edit, what_to_edit, the_edit)
 
 t3_canvas.tag_bind(t3_row3_shape2, "<Button-1>", t3_row3_button2_code)
+
+def t3_row3_button3_code(self):
+
+	argument_point_mover()
+
+	t3_points3_on_canvas = [150+argument_point_adjustor, 250]
+	t3_shape3_on_canvas = canvas.create_image(t3_points3_on_canvas, image = t3_row3_block3)
+
+	user_input_time = simpledialog.askstring("Time Input","Please enter time in HH:MM format")
+
+	user_input_hour,user_input_minute = user_input_time.split(':')
+
+	if user_input_hour  is None:
+		print ('Incorrect hour value')
+		return 	
+
+	elif user_input_minute is None:
+		print ('Incorrect minute vlaue')
+		return
+
+	else: 
+
+		line_to_edit = 'user_input_hour'
+		what_to_edit ='user_input_hour'
+		the_edit = user_input_hour
+
+		line_editor(line_to_edit, what_to_edit, the_edit)
+
+		line_to_edit = 'user_input_minute'
+		what_to_edit ='user_input_minute'
+		the_edit = user_input_minute
+
+		line_editor(line_to_edit, what_to_edit, the_edit)
+
+	to_replace = '#dateprep'
+	replacement = '        user_input_date = "DayMonthYear"\n        InputDate = datetime.strptime(user_input_date, "%d-%m-%Y")\n        InputDate = InputDate.date()\n'
+
+	line_replece(to_replace,replacement)
+
+	user_input_date = simpledialog.askstring("Date Input","Please enter the date in a DD-MM-YYYY format")
+
+	line_to_edit = 'user_input_date = "DayMonthYear"'
+	what_to_edit ='DayMonthYear'
+	the_edit = user_input_date
+
+	line_editor(line_to_edit, what_to_edit, the_edit)
+
+	line_to_edit = 'userinput'
+	what_to_edit ='userinput'
+	the_edit = 'InputDate'
+
+	line_editor(line_to_edit, what_to_edit, the_edit)
+
+t3_canvas.tag_bind(t3_row3_shape3, "<Button-1>", t3_row3_button3_code)
 
 def t4_button1_code(self):
 	
