@@ -2,16 +2,28 @@ from tkinter import *
 from tkinter import ttk
 from tkinter import filedialog
 from tkinter import simpledialog
-from datetime import datetime
+from datetime import datetime, date
 import os, subprocess, fileinput, subprocess
 
 root = Tk()
 
 root.title('Mycroft Skill Maker')
-root.geometry("1000x500")
-
+root.geometry("1125x600")
+root.columnconfigure(0, weight=1)
+root.rowconfigure(0, weight=1)
 ##Sets up the main canvas size and colour
-canvas = Canvas(root, width=800, height=500, bg="white")
+frame_canvas = Frame(root, width=800, height = 500)
+frame_canvas.grid(sticky="E")
+#frame_canvas.columnconfigure(0, weight=1)
+#frame_canvas.rowconfigure(0, weight=1)
+frame_canvas.grid_propagate(False)
+
+canvas = Canvas(frame_canvas, width=1800, height=500, bg="white")
+
+vsb = Scrollbar(frame_canvas, orient="horizontal", command=canvas.xview)
+vsb.grid(row=0, column=1, sticky='n')
+canvas.configure(xscrollcommand=vsb.set)
+canvas.config(scrollregion=canvas.bbox("all"))
 
 ## Function to open a window allowing the user to select a file when called.
 def select_file_button():
@@ -30,10 +42,29 @@ def help_button():
 	subprocess.call([opener, "README"])
 
 point_adjustor = 0 
-def point_mover():
+def point_mover(size_variant):
 	global point_adjustor
-	point_adjustor = point_adjustor + 80
+	point_adjustor = point_adjustor + 260 + size_variant
 	return 
+
+statement_tally = 0 
+def statement_block_tally():
+	global statement_tally
+	statement_tally = statement_tally + 1
+	return 
+
+argument_point_adjustor = 0  
+argument_block_tally = 0
+def argument_point_mover():
+	global argument_point_adjustor
+	global argument_block_tally
+	if statement_tally == 1 and argument_point_adjustor == 0 or argument_block_tally % 3 == 0:
+		argument_point_adjustor = point_adjustor - 308 
+		argument_block_tally = argument_block_tally + 1
+	else:
+		argument_point_adjustor = argument_point_adjustor + 60 
+		argument_block_tally = argument_block_tally + 1
+	return	
 
 def line_editor(line_to_edit, what_to_edit, the_edit):
 	for import_line in fileinput.FileInput(folder_path.name, inplace=1):
@@ -81,7 +112,6 @@ style = ttk.Style(root)
 
 ## Configures the notebook style and set the tab (North, South, East, West)
 style.configure('lefttab.TNotebook', tabposition='w')
-
 ## Sets the theme and side of the tab buttons
 style.theme_settings("default", {"TNotebook.Tab": {"configure": {"padding": [20, 40]}}})
 
@@ -89,73 +119,131 @@ style.theme_settings("default", {"TNotebook.Tab": {"configure": {"padding": [20,
 notebook = ttk.Notebook(root, style='lefttab.TNotebook' )
 
 ## Tab frame created and assigned a variable name  
-t1 = Frame(notebook)
-t2 = Frame(notebook)
-t3 = Frame(notebook)
-t4 = Frame(notebook)
-t5 = Frame(notebook)
+t1 = Frame(notebook, width=200, height=500)
+t2 = Frame(notebook, width=200, height=500)
+t3 = Frame(notebook, width=200, height=500)
+t4 = Frame(notebook, width=200, height=500)
+t5 = Frame(root,width=1000, height=100, bg='blue')
+t5.grid(row=2, sticky="ES")
+t6 = Frame(root,width=125 , height= 100 )
+t6.grid(row=2, sticky="W")
+
+
+
+#t6_bg = PhotoImage(file="images/Statement.png")
 # Creates the side tabs
-notebook.add(t1, text='Imports     ')
-notebook.add(t2, text='Functions  ')
-notebook.add(t3, text='Endings     ')
-notebook.add(t4, text='Input         ')
-notebook.add(t5, text='Statement')
+notebook.add(t1, text='Imports       ')
+notebook.add(t2, text='Functions    ')
+notebook.add(t3, text='Argument    ')
+notebook.add(t4, text='Response    ')
+
+#notebook.add(t6, text='Statement ')
 ## Sets the specified UI position in the Y axis 
-notebook.grid(column = 0)
+notebook.grid(column = 0, row = 0, sticky="W")
 ## The side tabs are chaned into canvases allowing shapes to be created on them. The canvas size and colour are set and tabs are assigned.
 t1_canvas = Canvas(t1, width=200, height=500, bg='red')
-t2_canvas = Canvas(t2, width=200, height=500, bg='blue')
+t2_canvas = Canvas(t2, width=200, height=500, bg='yellow')
 t3_canvas = Canvas(t3, width=200, height=500, bg='green')
-t4_canvas = Canvas(t4, width=200, height=500, bg='purple')
-t5_canvas = Canvas(t5, width=200, height=500, bg='yellow')
+t4_canvas = Canvas(t4, width=200, height=500, bg='#c313c3')
+t5_canvas = Canvas(t5, width=1000, height=100, bg='blue')
+t6_canvas = Canvas(t6, width=125, height=100, bg='white')
+t6_canvas.grid(row=2, sticky="W")
+#t6_canvas = Canvas(t6, width=1200, height=50, bg='blue')
 ## The points represent the x and y axis of the canvas and each 2 points a point where the line stops.
 ## Eg if you take the first 6 points [20, 20, 20, 100, 100, 100]. This means the line starts at 20, 20 and goes to 20, 100 and from that point it turns to 100, 100 to make another point there
-t1_points1 = [20+point_adjustor, 20, 20+point_adjustor, 100, 100+point_adjustor, 100, 100+point_adjustor, 80, 120+point_adjustor, 80, 120+point_adjustor, 40, 100+point_adjustor, 40, 100+point_adjustor, 20 ]
+t1_block1 = PhotoImage(file="images/Imports/t1_block1.png")
 ## shape is created by taking the pre-established points and specifying the shape's border and inside colour as well as border width.
-t1_shape1 = t1_canvas.create_polygon(t1_points1, outline='#000', fill='#7e2530', width=2)
+t1_shape1 = t1_canvas.create_image(100, 50, image = t1_block1)
 t1_canvas.grid(column = 0)
 
-t2_points1 = [20, 20, 20, 40, 40, 40, 40, 80, 20, 80, 20, 100, 100, 100, 100, 80, 120, 60, 100, 40, 100, 20]
-t2_shape1 = t2_canvas.create_polygon(t2_points1, outline='#000', fill='#003153', width=2)
+t2_block1 = PhotoImage(file="images/Functions/GetCurrentTime.png")
+t2_shape1 = t2_canvas.create_image(100, 50, image = t2_block1)
 t2_canvas.grid(column = 0)
 
-t2_points2 = [20, 120, 20, 140, 40, 160, 20, 180, 20, 200, 100, 200, 100, 180, 120, 160, 100, 140, 100, 120]
-t2_shape2 = t2_canvas.create_polygon(t2_points2, outline='#000', fill='#003153', width=2)
+t2_block2 = PhotoImage(file="images/Functions/GetCurrentDate.png")
+t2_shape2 = t2_canvas.create_image(100, 150, image = t2_block2)
 t2_canvas.grid(column = 0)
 
-t3_points1 = [20, 20, 20, 40, 40, 60, 20, 80, 20, 100, 100, 100, 100, 20]
-t3_shape1 = t3_canvas.create_polygon(t3_points1, outline='#000', fill='#00630d', width=2)
+t3_row1_block1 = PhotoImage(file="images/Argument/CurrentTimeDiamond.png")
+t3_row1_shape1 = t3_canvas.create_image(50, 50, image = t3_row1_block1)
 t3_canvas.grid(column = 0)
-## Function with code assigned for the first button
 
-t4_points1 = [20, 20, 20, 40, 40, 60, 20, 80, 20, 100, 100, 100, 100, 20]
-t4_shape1 = t4_canvas.create_polygon(t4_points1, outline='#000', fill='#7d12c4', width=2)
+t3_row1_block2 = PhotoImage(file="images/Argument/CurrentDateDiamond.png")
+t3_row1_shape2 = t3_canvas.create_image(50, 100, image = t3_row1_block2)
+t3_canvas.grid(column = 0)
+
+t3_row2_block1 = PhotoImage(file="images/Argument/EqualToPentagon.png")
+t3_row2_shape1 = t3_canvas.create_image(100, 50, image = t3_row2_block1)
+t3_canvas.grid(column = 0)
+
+t3_row2_block2 = PhotoImage(file="images/Argument/IsEqualToPentagon.png")
+t3_row2_shape2 = t3_canvas.create_image(100, 100, image = t3_row2_block2)
+t3_canvas.grid(column = 0)
+
+t3_row2_block3 = PhotoImage(file="images/Argument/LessThanPentagon.png")
+t3_row2_shape3 = t3_canvas.create_image(100, 150, image = t3_row2_block3)
+t3_canvas.grid(column = 0)
+
+t3_row2_block4 = PhotoImage(file="images/Argument/GreaterThanPentagon.png")
+t3_row2_shape4 = t3_canvas.create_image(100, 200, image = t3_row2_block4)
+t3_canvas.grid(column = 0)
+
+t3_row2_block5 = PhotoImage(file="images/Argument/PlusPentagon.png")
+t3_row2_shape5 = t3_canvas.create_image(100, 250, image = t3_row2_block5)
+t3_canvas.grid(column = 0)
+
+t3_row2_block6 = PhotoImage(file="images/Argument/MinusPentagon.png")
+t3_row2_shape6 = t3_canvas.create_image(100, 300, image = t3_row2_block6)
+t3_canvas.grid(column = 0)
+
+t3_row3_block1 = PhotoImage(file="images/Argument/UserSetTimeHexagon.png")
+t3_row3_shape1 = t3_canvas.create_image(150, 50, image = t3_row3_block1)
+t3_canvas.grid(column = 0)
+
+t3_row3_block2 = PhotoImage(file="images/Argument/UserSetDateHexagon.png")
+t3_row3_shape2 = t3_canvas.create_image(150, 100, image = t3_row3_block2)
+t3_canvas.grid(column = 0)
+
+t4_block1 = PhotoImage(file="images/Response/CustomResponseSentence.png")
+t4_shape1 = t4_canvas.create_image(100, 50, image = t4_block1)
 t4_canvas.grid(column = 0)
 
-t5_points1 = [20, 20, 20, 40, 40, 40, 40, 80, 20, 80, 20, 100, 100, 100, 100, 80, 120, 60, 100, 40, 100, 20]
-t5_shape1 = t5_canvas.create_polygon(t5_points1, outline='#000', fill='#a6a005', width=2)
-t5_canvas.grid(column = 0)
+t4_block2 = PhotoImage(file="images/Response/CustomResponseOpenBrowser.png")
+t4_shape2 = t4_canvas.create_image(100, 150, image = t4_block2)
+t4_canvas.grid(column = 0)
 
-t5_points2 = [20, 120, 20, 140, 40, 160, 20, 180, 20, 200, 100, 200, 100, 180, 120, 160, 100, 140, 100, 120]
-t5_shape2 = t5_canvas.create_polygon(t5_points2, outline='#000', fill='#00630d', width=2)
-t5_canvas.grid(column = 0)
+t5_block1 = PhotoImage(file="images/Statement/IfStatement.png")
+t5_shape1 = t5_canvas.create_image(150, 50, image = t5_block1)
+t5_canvas.grid(row = 2)
 
-canvas.grid(row = 0, column = 1, columnspan = 8, rowspan = 8 )
+t5_block2 = PhotoImage(file="images/Statement/ElIfStatement.png")
+t5_shape2 = t5_canvas.create_image(420, 50, image = t5_block2)
+t5_canvas.grid(row = 2)
+
+t5_block3 = PhotoImage(file="images/Statement/ElseStatement.png")
+t5_shape3 = t5_canvas.create_image(605, 50, image = t5_block3)
+t5_canvas.grid(row = 2)
+
+t6_overlay = PhotoImage(file="images/Statement.png")
+t6_canvas.create_image(62, 50, image = t6_overlay)
+t6.grid(row=2, sticky="W")
+
+canvas.grid(row = 0, column = 0, columnspan = 8, rowspan = 8, stick='NE')
 
 def t1_button1_code(self):
 
 	global t1_shape1_on_canvas
 
-	## The buttons shape is reproduced on the main canvas 
-	t1_points1_on_canvas = [20+point_adjustor, 20, 20+point_adjustor, 100, 100+point_adjustor, 100, 100+point_adjustor, 80, 120+point_adjustor, 80, 120+point_adjustor, 40, 100+point_adjustor, 40, 100+point_adjustor, 20 ]
-	t1_shape1_on_canvas = canvas.create_polygon(t1_points1_on_canvas, outline='#000', fill='#7e2530', width=2)
+	t1_points1_on_canvas = [70+point_adjustor, 250]
+	t1_shape1_on_canvas = canvas.create_image(t1_points1_on_canvas, image = t1_block1)
 
 	what_to_find = 'from mycroft import MycroftSkill, intent_file_handler'
-	what_to_add = 'from adapt.intent import IntentBuilder \nfrom datetime import datetime\n'
+	what_to_add = 'from adapt.intent import IntentBuilder \nfrom datetime import datetime, date\n'
 
 	line_addition(what_to_find,what_to_add)
-# When the left mouse button is clicked on the shape it executes t1_button1_code 
-	point_mover()
+
+	size_variant = -180
+	point_mover(size_variant)
 t1_canvas.tag_bind(t1_shape1, "<Button-1>", t1_button1_code)
 
 def t1_button_shape1_removal(self):
@@ -172,71 +260,159 @@ t1_canvas.tag_bind(t1_shape1, "<Button-3>", t1_button_shape1_removal)
 
 def t2_button1_code(self):
 
-	t2_points1 = [20+point_adjustor, 20, 20+point_adjustor, 40, 40+point_adjustor, 40, 40+point_adjustor, 80, 20+point_adjustor, 80, 20+point_adjustor, 100, 100+point_adjustor, 100, 100+point_adjustor, 80, 120+point_adjustor, 60, 100+point_adjustor, 40, 100+point_adjustor, 20]
-	canvas.create_polygon(t2_points1, outline='#000', fill='#003153', width=2)
+	t2_points1_on_canvas = [70+point_adjustor, 250]
+	t2_shape1_on_canvas = canvas.create_image(t2_points1_on_canvas, image = t2_block1)
 
-	t2_points1 = [20+point_adjustor, 20, 20+point_adjustor, 40, 40+point_adjustor, 40, 40+point_adjustor, 80, 20+point_adjustor, 80, 20+point_adjustor, 100, 100+point_adjustor, 100, 100+point_adjustor, 80, 120+point_adjustor, 60, 100+point_adjustor, 40, 100+point_adjustor, 20]
-	canvas.create_polygon(t2_points1, outline='#000', fill='#003153', width=2)
-
-	what_to_find = '(self, message):'
+	what_to_find = 'self.speak_dialog('
 	what_to_add = '        now = datetime.now().time()\n        #ifstatement\n'
 	line_addition(what_to_find, what_to_add)
 
-	line_to_edit = 'self.speak_dialog'
-	what_to_edit =')'
-	the_edit = '+ now.strftime(" %Y-%m-%d %H:%M:%S"))'
-	line_editor(line_to_edit, what_to_edit, the_edit)
-
-	what_to_find = 'now.strftime(" %Y-%m-%d %H:%M:%S"))'
-	what_to_add = '        #elsestatement\n'
-	line_addition(what_to_find, what_to_add)
-
-	point_mover()
+	size_variant = -171
+	point_mover(size_variant)
 t2_canvas.tag_bind(t2_shape1, "<Button-1>", t2_button1_code)
 
 def t2_button2_code(self):
-	canvas.create_polygon(t2_points2, outline='#000', fill='#003153', width=2)
-t2_canvas.tag_bind(t2_shape2, "<Button-1>", t2_button2_code)
 
-def t3_button1_code(self):
-	t3_points1 = [20+point_adjustor, 20, 20+point_adjustor, 40, 40+point_adjustor, 60, 20+point_adjustor, 80, 20+point_adjustor, 100, 100+point_adjustor, 100, 100+point_adjustor, 20]
-	canvas.create_polygon(t3_points1, outline='#000', fill='#00630d', width=2)
+	t2_points2_on_canvas = [70+point_adjustor, 250]
+	t2_shape2_on_canvas = canvas.create_image(t2_points2_on_canvas, image = t2_block2)
 
-	what_to_find = 'now.strftime(" %Y-%m-%d %H:%M:%S"))'
-	what_to_add = '\n    def stop(self):\n        pass\n'
-
+	what_to_find = 'self.speak_dialog('
+	what_to_add = '        CurrentDate = date.today()\n        #dateprep\n        #ifstatement\n'
 	line_addition(what_to_find, what_to_add)
 
-	point_mover()
-t3_canvas.tag_bind(t3_shape1, "<Button-1>", t3_button1_code)
+	size_variant = -171
+	point_mover(size_variant)
+t2_canvas.tag_bind(t2_shape2, "<Button-1>", t2_button2_code)	
 
-def t4_button1_code(self):
-	canvas.create_polygon(t4_points1, outline='#000', fill='#7d12c4', width=2)
+def t3_row1_button1_code(self):
 
-	to_replace = '#ifstatement'
-	replacement = '        if variablename symbol userinput:\n'
+	argument_point_mover()
 
-	line_replece(to_replace,replacement)
-
-	what_to_find = 'if variablename symbol userinput'
-	what_to_add = '    '
-
-	line_addition(what_to_find,what_to_add)
-
-t4_canvas.tag_bind(t4_shape1, "<Button-1>", t4_button1_code)
-
-def t5_button1_code(self):
-	canvas.create_polygon(t5_points1, outline='#000', fill='#a6a005', width=2)
+	t3_row1_points1_on_canvas = [150+argument_point_adjustor, 250]
+	t3_row1_shape1_on_canvas = canvas.create_image(t3_row1_points1_on_canvas, image = t3_row1_block1)
 
 	line_to_edit = 'if variablename symbol userinput:'
 	what_to_edit ='variablename symbol userinput:'
 	the_edit = 'now.hour symbol user_input_hour and now.minute symbol user_input_minute:'
+	line_editor(line_to_edit, what_to_edit, the_edit)
+
+t3_canvas.tag_bind(t3_row1_shape1, "<Button-1>", t3_row1_button1_code)
+
+def t3_row1_button2_code(self):
+
+	argument_point_mover()
+
+	t3_row1_points2_on_canvas = [150+argument_point_adjustor, 250]
+	t3_row1_shape2_on_canvas = canvas.create_image(t3_row1_points2_on_canvas, image = t3_row1_block2)
+
+	line_to_edit = 'if variablename symbol userinput:'
+	what_to_edit ='variablename'
+	the_edit = 'CurrentDate'
+	line_editor(line_to_edit, what_to_edit, the_edit)
+
+t3_canvas.tag_bind(t3_row1_shape2, "<Button-1>", t3_row1_button2_code)
+
+
+def t3_row2_button1_code(self):
+
+	argument_point_mover()
+
+	t3_row2_points1_on_canvas = [150+argument_point_adjustor, 250]
+	t3_row2_shape1_on_canvas = canvas.create_image(t3_row2_points1_on_canvas, image = t3_row2_block1)
+
+	line_to_edit = 'symbol'
+	what_to_edit ='symbol'
+	the_edit = '=='
 
 	line_editor(line_to_edit, what_to_edit, the_edit)
-t5_canvas.tag_bind(t5_shape1, "<Button-1>", t5_button1_code)
 
-def t5_button2_code(self):
-	canvas.create_polygon(t5_points2, outline='#000', fill='#a6a005', width=2)
+t3_canvas.tag_bind(t3_row2_shape1, "<Button-1>", t3_row2_button1_code)
+
+def t3_row2_button2_code(self):
+
+	argument_point_mover()
+
+	t3_row2_points2_on_canvas = [150+argument_point_adjustor, 250]
+	t3_row2_shape2_on_canvas = canvas.create_image(t3_row2_points2_on_canvas, image = t3_row2_block2)
+
+	line_to_edit = 'symbol'
+	what_to_edit ='symbol'
+	the_edit = '='
+
+	line_editor(line_to_edit, what_to_edit, the_edit)
+
+
+t3_canvas.tag_bind(t3_row2_shape2, "<Button-1>", t3_row2_button2_code)
+
+def t3_row2_button3_code(self):
+
+	argument_point_mover()
+
+	t3_row2_points3_on_canvas = [150+argument_point_adjustor, 250]
+	t3_row2_shape3_on_canvas = canvas.create_image(t3_row2_points3_on_canvas, image = t3_row2_block3)
+
+	line_to_edit = 'symbol'
+	what_to_edit ='symbol'
+	the_edit = '<'
+
+	line_editor(line_to_edit, what_to_edit, the_edit)
+
+
+t3_canvas.tag_bind(t3_row2_shape3, "<Button-1>", t3_row2_button3_code)
+
+def t3_row2_button4_code(self):
+
+	argument_point_mover()
+
+	t3_row2_points4_on_canvas = [150+argument_point_adjustor, 250]
+	t3_row2_shape4_on_canvas = canvas.create_image(t3_row2_points4_on_canvas, image = t3_row2_block4)
+
+	line_to_edit = 'symbol'
+	what_to_edit ='symbol'
+	the_edit = '>'
+
+	line_editor(line_to_edit, what_to_edit, the_edit)
+
+
+t3_canvas.tag_bind(t3_row2_shape4, "<Button-1>", t3_row2_button4_code)
+
+def t3_row2_button5_code(self):
+
+	argument_point_mover()
+
+	t3_row2_points5_on_canvas = [150+argument_point_adjustor, 250]
+	t3_row2_shape5_on_canvas = canvas.create_image(t3_row2_points5_on_canvas, image = t3_row2_block5)
+
+	line_to_edit = 'symbol'
+	what_to_edit ='symbol'
+	the_edit = '+'
+
+	line_editor(line_to_edit, what_to_edit, the_edit)
+
+
+t3_canvas.tag_bind(t3_row2_shape5, "<Button-1>", t3_row2_button5_code)
+
+def t3_row2_button6_code(self):
+
+	argument_point_mover()
+
+	t3_row2_points6_on_canvas = [150+argument_point_adjustor, 250]
+	t3_row2_shape6_on_canvas = canvas.create_image(t3_row2_points6_on_canvas, image = t3_row2_block6)
+
+	line_to_edit = 'symbol'
+	what_to_edit ='symbol'
+	the_edit = '-'
+
+	line_editor(line_to_edit, what_to_edit, the_edit)
+
+
+t3_canvas.tag_bind(t3_row2_shape6, "<Button-1>", t3_row2_button6_code)
+def t3_row3_button1_code(self):
+
+	argument_point_mover()
+
+	t3_points_on_canvas = [150+argument_point_adjustor, 250]
+	t3_shape1_on_canvas = canvas.create_image(t3_points_on_canvas, image = t3_row3_block1)
 
 	user_inp = simpledialog.askstring("Time Input","Please enter time in HH:MM format")
 
@@ -263,8 +439,167 @@ def t5_button2_code(self):
 		the_edit = user_input_minute
 
 		line_editor(line_to_edit, what_to_edit, the_edit)
+
+t3_canvas.tag_bind(t3_row3_shape1, "<Button-1>", t3_row3_button1_code)
+
+def t3_row3_button2_code(self):
+
+	argument_point_mover()
+
+	t3_points_on_canvas = [150+argument_point_adjustor, 250]
+	t3_shape1_on_canvas = canvas.create_image(t3_points_on_canvas, image = t3_row3_block1)
+
+	to_replace = '#dateprep'
+	replacement = '        user_input_date = "DayMonthYear"\n        InputDate = datetime.strptime(user_input_date, "%d-%m-%Y")\n        InputDate = InputDate.date()\n'
+
+	line_replece(to_replace,replacement)
+
+	user_input_date = simpledialog.askstring("Date Input","Please enter the date in a DD-MM-YYYY format")
+
+	line_to_edit = 'user_input_date = "DayMonthYear"'
+	what_to_edit ='DayMonthYear'
+	the_edit = user_input_date
+
+	line_editor(line_to_edit, what_to_edit, the_edit)
+
+	line_to_edit = 'userinput'
+	what_to_edit ='userinput'
+	the_edit = 'InputDate'
+
+	line_editor(line_to_edit, what_to_edit, the_edit)
+
+t3_canvas.tag_bind(t3_row3_shape2, "<Button-1>", t3_row3_button2_code)
+
+def t4_button1_code(self):
+	
+	t4_points1_on_canvas = [70+point_adjustor, 250]
+	t4_shape1_on_canvas = canvas.create_image(t4_points1_on_canvas, image = t4_block1)
+
+	user_inp = simpledialog.askstring("Sentance Response","Please enter your dialog")
+
+	to_replace = '#response'
+	replacement = '           self.speak_dialog("DialogResponse")\n'
+
+	line_replece(to_replace,replacement)
+
+	what_to_find = 'self.speak_dialog("DialogResponse")'
+	what_to_add = '           #response\n'
+
+	line_addition(what_to_find,what_to_add)
+
+
+	line_to_edit = 'self.speak_dialog("DialogResponse")'
+	what_to_edit ='DialogResponse'
+	the_edit = user_inp
+
+	line_editor(line_to_edit, what_to_edit, the_edit)
+
+	size_variant = -171
+	point_mover(size_variant)
+t4_canvas.tag_bind(t4_shape1, "<Button-1>", t4_button1_code)
+
+def t4_button2_code(self):
+	t4_points_on_canvas = [70+point_adjustor, 250]
+	t4_shape2_on_canvas = canvas.create_image(t4_points_on_canvas, image = t4_block2)
+
+	user_inp = simpledialog.askstring("Sentance Response","Please enter the website url (include https//www.)")
+
+	if user_inp  == "":
+		user_inp = 'https://www.google.com' 
+
+	what_to_find = 'from mycroft import MycroftSkill, intent_file_handler'
+	what_to_add = 'import webbrowser\n'
+
+	line_addition(what_to_find,what_to_add)
+
+	to_replace = '#response'
+	replacement = '           webbrowser.open("https://www.google.com", new=2)\n'
+
+	line_replece(to_replace,replacement)
+
+	line_to_edit = 'webbrowser.open("https://www.google.com", new=2)'
+	what_to_edit ='https://www.google.com'
+	the_edit = user_inp
+
+	line_editor(line_to_edit, what_to_edit, the_edit)
+
+	what_to_find = 'webbrowser.open("'
+	what_to_add = '           #response\n'
+
+	line_addition(what_to_find,what_to_add)
+
+
+	size_variant = -171
+	point_mover(size_variant)
+t4_canvas.tag_bind(t4_shape2, "<Button-1>", t4_button2_code)
+
+def t5_button1_code(self):
+	statement_block_tally()
+
+	t5_points1_on_canvas = [150+point_adjustor, 250]
+	t5_shape1_on_canvas = canvas.create_image(t5_points1_on_canvas, image = t5_block1)
+
+	to_replace = '#ifstatement'
+	replacement = '        if variablename symbol userinput:\n'
+	line_replece(to_replace,replacement)
+
+	what_to_find = 'if variablename symbol userinput'
+	what_to_add = '        #elsestatement'
+
+	line_addition(what_to_find,what_to_add)
+
+	what_to_find = '        if variablename symbol userinput:'
+	what_to_add = '            #response\n'
+
+	line_addition(what_to_find,what_to_add)
+	size_variant = -11
+	point_mover(size_variant)
+t5_canvas.tag_bind(t5_shape1, "<Button-1>", t5_button1_code)
+
+def t5_button2_code(self):
+	statement_block_tally()
+
+	t5_points_on_canvas = [150+point_adjustor, 250]
+	t5_shape2_on_canvas = canvas.create_image(t5_points_on_canvas, image = t5_block2)
 		
+	delete_this ='#response'
+	line_deletion(delete_this)
+
+	to_replace = '#elsestatement'
+	replacement = '        elif variablename symbol userinput:\n'
+	line_replece(to_replace,replacement)
+
+	what_to_find = 'elif variablename symbol userinput'
+	what_to_add = '        #elsestatement'
+
+	line_addition(what_to_find,what_to_add)
+
+	what_to_find = 'elif variablename symbol userinput:'
+	what_to_add = '           #response\n'
+
+	line_addition(what_to_find,what_to_add)
+
+	size_variant = -11
+	point_mover(size_variant)
 t5_canvas.tag_bind(t5_shape2, "<Button-1>", t5_button2_code)
 
+def t5_button3_code(self):
+	statement_block_tally()
+
+	t5_points3_on_canvas = [70+point_adjustor, 250]
+	t5_shape3_on_canvas = canvas.create_image(t5_points3_on_canvas, image = t5_block3)
+
+	to_replace = '#elsestatement'
+	replacement = '        else:\n'
+	line_replece(to_replace,replacement)
+
+	what_to_find = 'else:'
+	what_to_add = '    #response'
+
+	line_addition(what_to_find,what_to_add)
+
+	size_variant = -171
+	point_mover(size_variant)
+t5_canvas.tag_bind(t5_shape3, "<Button-1>", t5_button3_code)
 
 root.mainloop()	
