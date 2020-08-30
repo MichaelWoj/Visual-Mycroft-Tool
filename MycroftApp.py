@@ -11,15 +11,15 @@ root.title('Mycroft Skill Maker')
 root.geometry("1125x600")
 root.columnconfigure(0, weight=1)
 root.rowconfigure(0, weight=1)
-##Sets up the main canvas size and colour
+##Sets up the main frame size and which direction it sticks to 
 frame_canvas = Frame(root, width=800, height = 500)
 frame_canvas.grid(sticky="E")
-#frame_canvas.columnconfigure(0, weight=1)
-#frame_canvas.rowconfigure(0, weight=1)
+
 frame_canvas.grid_propagate(False)
 
 canvas = Canvas(frame_canvas, width=1800, height=500, bg="white")
 
+##Creates scroll buttons for the main canvas 
 vsb = Scrollbar(frame_canvas, orient="horizontal", command=canvas.xview)
 vsb.grid(row=0, column=1, sticky='n')
 canvas.configure(xscrollcommand=vsb.set)
@@ -41,12 +41,18 @@ def help_button():
 	opener = "open" if sys.platform == "dawrin" else "xdg-open"
 	subprocess.call([opener, "README"])
 
+## Adjusts where a block will be placed according to other blocks 
+#
+# 260 is set as default as thats the size of the largest block. It is then adjusted based on each blocks input
 point_adjustor = 0 
 def point_mover(size_variant):
 	global point_adjustor
 	point_adjustor = point_adjustor + 260 + size_variant
 	return 
 
+## Is and elif statement block tally
+#
+# This is to allow statement blocks to get the current position of the statement and adjust accordingly to fit into correct slots 
 statement_tally = 0 
 def statement_block_tally(option):
 	global statement_tally
@@ -59,6 +65,12 @@ def statement_block_tally(option):
 
 argument_point_adjustor = 0  
 argument_block_tally = 0
+
+## A point adjustor for Arguments 
+#
+# Option 0 the coordinates of where the argument block is placed is dependant on the current position of a Statement block and adjusts accordingly. Every 3 blocks the location resets
+# Option 1 is for deleting of statement blocks
+# Option 2 is for deleting argument blocks
 def argument_point_mover(option):
 	global argument_point_adjustor
 	global argument_block_tally
@@ -79,26 +91,29 @@ def argument_point_mover(option):
 		argument_block_tally = argument_block_tally - 1
 		return
 
+
+## Finds a line and repleaces a specific part of it
 def line_editor(line_to_edit, what_to_edit, the_edit):
 	for import_line in fileinput.FileInput(folder_path.name, inplace=1):
 		if line_to_edit in import_line:
 			import_line = import_line.replace(what_to_edit,the_edit)
 		print(import_line, end='')
 	
-
+## Replaces a line with a new line
 def line_replece(to_replace, replacement):
 	for function_line in fileinput.FileInput(folder_path.name, inplace=1):
 		if to_replace in function_line:
-			#When the wanted line is found it clears the line, then reprents it with the added string
 			function_line = function_line.replace(function_line,replacement)
 		print(function_line, end='')
 
+## Finds a line and adds something to it or after it 
 def line_addition(what_to_find, what_to_add):		
 	for import_line in fileinput.FileInput(folder_path.name, inplace=1):
 		if what_to_find in import_line:
 			import_line = import_line.replace(import_line,import_line+what_to_add)
 		print(import_line, end='')
 
+## Deletes a line/specific part of a line
 def line_deletion(delete_this):
 	for function_line in fileinput.FileInput(folder_path.name, inplace=1):
 		if delete_this in function_line:
@@ -147,7 +162,7 @@ notebook.add(t2, text='Functions    ')
 notebook.add(t3, text='Argument    ')
 notebook.add(t4, text='Response    ')
 
-#notebook.add(t6, text='Statement ')
+
 ## Sets the specified UI position in the Y axis 
 notebook.grid(column = 0, row = 0, sticky="W")
 ## The side tabs are chaned into canvases allowing shapes to be created on them. The canvas size and colour are set and tabs are assigned.
@@ -158,7 +173,10 @@ t4_canvas = Canvas(t4, width=200, height=500, bg='#c313c3')
 t5_canvas = Canvas(t5, width=1000, height=100, bg='blue')
 t6_canvas = Canvas(t6, width=125, height=100, bg='white')
 t6_canvas.grid(row=2, sticky="W")
-#t6_canvas = Canvas(t6, width=1200, height=50, bg='blue')
+
+
+
+
 ## The points represent the x and y axis of the canvas and each 2 points a point where the line stops.
 ## Eg if you take the first 6 points [20, 20, 20, 100, 100, 100]. This means the line starts at 20, 20 and goes to 20, 100 and from that point it turns to 100, 100 to make another point there
 t1_block1 = PhotoImage(file="images/Imports/ImportDateTime.png")
@@ -251,6 +269,9 @@ t6_canvas.create_image(62, 50, image = t6_overlay)
 t6.grid(row=2, sticky="W")
 
 canvas.grid(row = 0, column = 0, columnspan = 8, rowspan = 8, stick='NE')
+
+
+
 
 def t1_button1_code(self):
 
@@ -590,11 +611,11 @@ def t3_row3_button1_code(self):
 
 	t3_row3_shape1_user_input_hour,t3_row3_shape1_user_input_minute = t3_row3_shape1_user_input.split(':')
 
-	if user_input_hour  is None:
+	if t3_row3_shape1_user_input_hour  is None:
 		print ('Incorrect hour value')
 		return 	
 
-	elif user_input_minute is None:
+	elif t3_row3_shape1_user_input_minute is None:
 		print ('Incorrect minute value')
 		return
 
