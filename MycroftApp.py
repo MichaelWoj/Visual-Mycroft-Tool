@@ -48,28 +48,36 @@ def point_mover(size_variant):
 	return 
 
 statement_tally = 0 
-def statement_block_tally():
+def statement_block_tally(option):
 	global statement_tally
-	statement_tally = statement_tally + 1
-	return 
+	if option == 0: 
+		statement_tally = statement_tally - 1
+		return
+	elif option == 1:
+		statement_tally = statement_tally + 1
+		return 
 
 argument_point_adjustor = 0  
 argument_block_tally = 0
-def argument_point_mover():
+def argument_point_mover(option):
 	global argument_point_adjustor
 	global argument_block_tally
-	if statement_tally == 1 and argument_point_adjustor == 0 or argument_block_tally % 3 == 0:
-		argument_point_adjustor = point_adjustor - 308 
-		argument_block_tally = argument_block_tally + 1
-	else:
-		argument_point_adjustor = argument_point_adjustor + 60 
-		argument_block_tally = argument_block_tally + 1
-	return	
-
-def argument_point_remover():
-	argument_point_adjustor = argument_point_adjustor - 60 
-	argument_block_tally = argument_block_tally - 1
-	return	
+	if option == 0:
+		if statement_tally == 1 and argument_point_adjustor == 0 or argument_block_tally % 3 == 0:
+			argument_point_adjustor = point_adjustor - 308 
+			argument_block_tally = argument_block_tally + 1
+			return
+		else:
+			argument_point_adjustor = argument_point_adjustor + 60 
+			argument_block_tally = argument_block_tally + 1
+			return	
+	elif option == 1:		
+		argument_point_adjustor = 0
+		return
+	elif option == 2:
+		argument_point_adjustor = argument_point_adjustor - 60 
+		argument_block_tally = argument_block_tally - 1
+		return
 
 def line_editor(line_to_edit, what_to_edit, the_edit):
 	for import_line in fileinput.FileInput(folder_path.name, inplace=1):
@@ -133,9 +141,6 @@ t5.grid(row=2, sticky="ES")
 t6 = Frame(root,width=125 , height= 100 )
 t6.grid(row=2, sticky="W")
 
-
-
-#t6_bg = PhotoImage(file="images/Statement.png")
 # Creates the side tabs
 notebook.add(t1, text='Imports       ')
 notebook.add(t2, text='Functions    ')
@@ -254,26 +259,21 @@ def t1_button1_code(self):
 	t1_points1_on_canvas = [70+point_adjustor, 250]
 	t1_shape1_on_canvas = canvas.create_image(t1_points1_on_canvas, image = t1_block1)
 
-	what_to_find = 'from mycroft import MycroftSkill, intent_file_handler'
-	what_to_add = 'from adapt.intent import IntentBuilder \nfrom datetime import datetime, date\n'
+	line_addition('from mycroft import MycroftSkill, intent_file_handler','from adapt.intent import IntentBuilder \nfrom datetime import datetime, date\n')
 
-	line_addition(what_to_find,what_to_add)
+	point_mover(-180)
 
-	size_variant = -180
-	point_mover(size_variant)
 t1_canvas.tag_bind(t1_shape1, "<Button-1>", t1_button1_code)
 
 def t1_button1_removal(self):
 	
-	delete_this ='from adapt.intent import IntentBuilder'
-	line_deletion(delete_this)
-	
-	delete_this ='import datetime'
-	line_deletion(delete_this)
+	line_deletion('from adapt.intent import IntentBuilder')
+	line_deletion('import datetime')
 
 	canvas.delete(t1_shape1_on_canvas)
-	size_variant = -340
-	point_mover(size_variant)
+
+	point_mover(-340)
+
 t1_canvas.tag_bind(t1_shape1, "<Button-3>", t1_button1_removal)
 
 def t2_button1_code(self):
@@ -283,25 +283,21 @@ def t2_button1_code(self):
 	t2_points1_on_canvas = [70+point_adjustor, 250]
 	t2_shape1_on_canvas = canvas.create_image(t2_points1_on_canvas, image = t2_block1)
 
-	what_to_find = 'self.speak_dialog('
-	what_to_add = '        now = datetime.now().time()\n        #ifstatement\n'
-	line_addition(what_to_find, what_to_add)
+	line_addition('self.speak_dialog(', '        now = datetime.now().time()\n        #ifstatement\n')
 
-	size_variant = -171
-	point_mover(size_variant)
+	point_mover(-171)
+
 t2_canvas.tag_bind(t2_shape1, "<Button-1>", t2_button1_code)
 
 def t2_button1_removal(self):
 	
-	delete_this ='now = datetime.now().time()'
-	line_deletion(delete_this)
-	
-	delete_this ='#ifstatement'
-	line_deletion(delete_this)
+	line_deletion('now = datetime.now().time()')
+	line_deletion('#ifstatement')
 
 	canvas.delete(t2_shape1_on_canvas)
-	size_variant = -349
-	point_mover(size_variant)
+
+	point_mover(-349)
+
 t2_canvas.tag_bind(t2_shape1, "<Button-3>", t2_button1_removal)
 
 def t2_button2_code(self):
@@ -311,40 +307,32 @@ def t2_button2_code(self):
 	t2_points2_on_canvas = [70+point_adjustor, 250]
 	t2_shape2_on_canvas = canvas.create_image(t2_points2_on_canvas, image = t2_block2)
 
-	what_to_find = 'self.speak_dialog('
-	what_to_add = '        CurrentDate = date.today()\n        #dateprep\n        #ifstatement\n'
-	line_addition(what_to_find, what_to_add)
+	line_addition('self.speak_dialog(', '        CurrentDate = date.today()\n        #dateprep\n        #ifstatement\n')
 
-	size_variant = -171
-	point_mover(size_variant)
+	point_mover(-171)
 t2_canvas.tag_bind(t2_shape2, "<Button-1>", t2_button2_code)	
 
 def t2_button2_removal(self):
 	
-	delete_this ='CurrentDate = date.today()'
-	line_deletion(delete_this)
-	
-	delete_this ='#dateprep'
-	line_deletion(delete_this)
-
-	delete_this ='#ifstatement'
-	line_deletion(delete_this)
+	line_deletion('CurrentDate = date.today()')
+	line_deletion('#dateprep')
+	line_deletion('#ifstatement')
 
 	canvas.delete(t2_shape2_on_canvas)
-	size_variant = -349
-	point_mover(size_variant)
+	point_mover(-349)
+
 t2_canvas.tag_bind(t2_shape2, "<Button-3>", t2_button2_removal)
 
 def t3_row1_button1_code(self):
 
-	argument_point_mover()
+	argument_point_mover(0)
 
 	global t3_row1_shape1_on_canvas
 
 	t3_row1_points1_on_canvas = [150+argument_point_adjustor, 250]
 	t3_row1_shape1_on_canvas = canvas.create_image(t3_row1_points1_on_canvas, image = t3_row1_block1)
 
-	line_to_edit = 'if variablename symbol userinput:'
+	line_to_edit = 'variablename symbol userinput:'
 	what_to_edit ='variablename symbol userinput:'
 	the_edit = 'now.hour symbol user_input_hour and now.minute symbol user_input_minute:'
 	line_editor(line_to_edit, what_to_edit, the_edit)
@@ -353,62 +341,98 @@ t3_canvas.tag_bind(t3_row1_shape1, "<Button-1>", t3_row1_button1_code)
 
 def t3_row1_button1_removal(self):
 	
-	argument_point_remover()
+	argument_point_mover(2)
 
-	line_to_edit = 'if now.hour symbol user_input_hour and now.minute symbol user_input_minute:'
+	line_to_edit = 'now.hour symbol user_input_hour and now.minute symbol user_input_minute:'
 	what_to_edit ='now.hour symbol user_input_hour and now.minute symbol user_input_minute:'
 	the_edit = 'variablename symbol userinput'
 	line_editor(line_to_edit, what_to_edit, the_edit)
 
 	canvas.delete(t3_row1_shape1_on_canvas)
+
 t3_canvas.tag_bind(t3_row1_shape1, "<Button-3>", t3_row1_button1_removal)
 
 def t3_row1_button2_code(self):
 
-	argument_point_mover()
+	argument_point_mover(0)
+
+	global t3_row1_shape2_on_canvas
 
 	t3_row1_points2_on_canvas = [150+argument_point_adjustor, 250]
 	t3_row1_shape2_on_canvas = canvas.create_image(t3_row1_points2_on_canvas, image = t3_row1_block2)
 
-	line_to_edit = 'if variablename symbol userinput:'
-	what_to_edit ='variablename'
-	the_edit = 'CurrentDate'
-	line_editor(line_to_edit, what_to_edit, the_edit)
+	line_editor('variablename symbol userinput:', 'variablename', 'CurrentDate')
 
 t3_canvas.tag_bind(t3_row1_shape2, "<Button-1>", t3_row1_button2_code)
 
+def t3_row1_button2_removal(self):
+	
+	argument_point_mover(2)
+
+	line_editor('CurrentDate symbol userinput', 'CurrentDate', 'variablename')
+
+	canvas.delete(t3_row1_shape2_on_canvas)
+
+t3_canvas.tag_bind(t3_row1_shape2, "<Button-3>", t3_row1_button2_removal)
+
+
 def t3_row1_button3_code(self):
 
-	argument_point_mover()
+	argument_point_mover(0)
+
+	global t3_row1_shape3_on_canvas	
 
 	t3_row1_points3_on_canvas = [150+argument_point_adjustor, 250]
 	t3_row1_shape3_on_canvas = canvas.create_image(t3_row1_points3_on_canvas, image = t3_row1_block3)
 
-	line_to_edit = 'if variablename symbol userinput:'
+	line_to_edit = 'variablename symbol userinput:'
 	what_to_edit ='variablename'
 	the_edit = 'now.hour symbol user_input_hour and now.minute symbol user_input_minute and CurrentDate'
 	line_editor(line_to_edit, what_to_edit, the_edit)
 
 t3_canvas.tag_bind(t3_row1_shape3, "<Button-1>", t3_row1_button3_code)
 
+def t3_row1_button3_removal(self):
+	
+	argument_point_mover(2)
+
+	line_to_edit = 'now.hour symbol user_input_hour and now.minute symbol user_input_minute and CurrentDate'
+	what_to_edit ='now.hour symbol user_input_hour and now.minute symbol user_input_minute and CurrentDate'
+	the_edit = 'variablename'
+	line_editor(line_to_edit, what_to_edit, the_edit)
+
+	canvas.delete(t3_row1_shape3_on_canvas)
+
+t3_canvas.tag_bind(t3_row1_shape3, "<Button-3>", t3_row1_button3_removal)
+
 def t3_row2_button1_code(self):
 
-	argument_point_mover()
+	argument_point_mover(0)
+
+	global t3_row2_shape1_on_canvas	
 
 	t3_row2_points1_on_canvas = [150+argument_point_adjustor, 250]
 	t3_row2_shape1_on_canvas = canvas.create_image(t3_row2_points1_on_canvas, image = t3_row2_block1)
 
-	line_to_edit = 'symbol'
-	what_to_edit ='symbol'
-	the_edit = '=='
-
-	line_editor(line_to_edit, what_to_edit, the_edit)
+	line_editor('symbol', 'symbol', '==')
 
 t3_canvas.tag_bind(t3_row2_shape1, "<Button-1>", t3_row2_button1_code)
 
+def t3_row2_button1_removal(self):
+	
+	argument_point_mover(2)
+
+	line_editor('==', '==', 'symbol')
+
+	canvas.delete(t3_row2_shape1_on_canvas)
+
+t3_canvas.tag_bind(t3_row2_shape1, "<Button-3>", t3_row2_button1_removal)
+
 def t3_row2_button2_code(self):
 
-	argument_point_mover()
+	argument_point_mover(0)
+
+	global t3_row2_shape2_on_canvas	
 
 	t3_row2_points2_on_canvas = [150+argument_point_adjustor, 250]
 	t3_row2_shape2_on_canvas = canvas.create_image(t3_row2_points2_on_canvas, image = t3_row2_block2)
@@ -417,392 +441,447 @@ def t3_row2_button2_code(self):
 	what_to_edit ='symbol'
 	the_edit = '='
 
-	line_editor(line_to_edit, what_to_edit, the_edit)
+	line_editor('symbol', 'symbol', '=')
 
 
 t3_canvas.tag_bind(t3_row2_shape2, "<Button-1>", t3_row2_button2_code)
 
+def t3_row2_button2_removal(self):
+	
+	argument_point_mover(2)
+
+	line_editor('=', '=', 'symbol')
+
+	canvas.delete(t3_row2_shape2_on_canvas)
+
+t3_canvas.tag_bind(t3_row2_shape2, "<Button-3>", t3_row2_button2_removal)
+
 def t3_row2_button3_code(self):
 
-	argument_point_mover()
+	argument_point_mover(0)
+
+	global t3_row2_shape3_on_canvas
 
 	t3_row2_points3_on_canvas = [150+argument_point_adjustor, 250]
 	t3_row2_shape3_on_canvas = canvas.create_image(t3_row2_points3_on_canvas, image = t3_row2_block3)
 
-	line_to_edit = 'symbol'
-	what_to_edit ='symbol'
-	the_edit = '<'
-
-	line_editor(line_to_edit, what_to_edit, the_edit)
+	line_editor('symbol', 'symbol', '<')
 
 
 t3_canvas.tag_bind(t3_row2_shape3, "<Button-1>", t3_row2_button3_code)
 
+def t3_row2_button3_removal(self):
+	
+	argument_point_mover(2)
+
+	line_editor('<', '<', 'symbol')
+
+	canvas.delete(t3_row2_shape3_on_canvas)
+
+t3_canvas.tag_bind(t3_row2_shape3, "<Button-3>", t3_row2_button3_removal)
+
 def t3_row2_button4_code(self):
 
-	argument_point_mover()
+	argument_point_mover(0)
+
+	global t3_row2_shape4_on_canvas
 
 	t3_row2_points4_on_canvas = [150+argument_point_adjustor, 250]
 	t3_row2_shape4_on_canvas = canvas.create_image(t3_row2_points4_on_canvas, image = t3_row2_block4)
 
-	line_to_edit = 'symbol'
-	what_to_edit ='symbol'
-	the_edit = '>'
-
-	line_editor(line_to_edit, what_to_edit, the_edit)
+	line_editor('symbol', 'symbol', '>')
 
 
 t3_canvas.tag_bind(t3_row2_shape4, "<Button-1>", t3_row2_button4_code)
 
+def t3_row2_button4_removal(self):
+	
+	argument_point_mover(2)
+
+	line_editor('>', '>', 'symbol')
+
+	canvas.delete(t3_row2_shape4_on_canvas)
+
+t3_canvas.tag_bind(t3_row2_shape4, "<Button-3>", t3_row2_button4_removal)
+
 def t3_row2_button5_code(self):
 
-	argument_point_mover()
+	argument_point_mover(0)
+
+	global t3_row2_shape5_on_canvas
 
 	t3_row2_points5_on_canvas = [150+argument_point_adjustor, 250]
 	t3_row2_shape5_on_canvas = canvas.create_image(t3_row2_points5_on_canvas, image = t3_row2_block5)
 
-	line_to_edit = 'symbol'
-	what_to_edit ='symbol'
-	the_edit = '+'
-
-	line_editor(line_to_edit, what_to_edit, the_edit)
+	line_editor('symbol', 'symbol', '+')
 
 
 t3_canvas.tag_bind(t3_row2_shape5, "<Button-1>", t3_row2_button5_code)
 
+def t3_row2_button5_removal(self):
+	
+	argument_point_mover(2)
+
+	line_editor('+', '+', 'symbol')
+
+	canvas.delete(t3_row2_shape5_on_canvas)
+
+t3_canvas.tag_bind(t3_row2_shape5, "<Button-3>", t3_row2_button5_removal)
+
 def t3_row2_button6_code(self):
 
-	argument_point_mover()
+	argument_point_mover(0)
+
+	global t3_row2_shape6_on_canvas
 
 	t3_row2_points6_on_canvas = [150+argument_point_adjustor, 250]
 	t3_row2_shape6_on_canvas = canvas.create_image(t3_row2_points6_on_canvas, image = t3_row2_block6)
 
-	line_to_edit = 'symbol'
-	what_to_edit ='symbol'
-	the_edit = '-'
-
-	line_editor(line_to_edit, what_to_edit, the_edit)
+	line_editor('symbol', 'symbol', '-')
 
 
 t3_canvas.tag_bind(t3_row2_shape6, "<Button-1>", t3_row2_button6_code)
 
+def t3_row2_button6_removal(self):
+	
+	argument_point_mover(2)
+
+	line_editor('-', '-', 'symbol')
+
+	canvas.delete(t3_row2_shape6_on_canvas)
+
+t3_canvas.tag_bind(t3_row2_shape6, "<Button-3>", t3_row2_button6_removal)
+
 def t3_row2_button7_code(self):
 
-	argument_point_mover()
+	argument_point_mover(0)
+
+	global t3_row2_shape7_on_canvas
 
 	t3_row2_points7_on_canvas = [150+argument_point_adjustor, 250]
 	t3_row2_shape7_on_canvas = canvas.create_image(t3_row2_points7_on_canvas, image = t3_row2_block7)
 
-	line_to_edit = 'symbol'
-	what_to_edit ='symbol'
-	the_edit = '!='
-
-	line_editor(line_to_edit, what_to_edit, the_edit)
-
+	line_editor('symbol', 'symbol', '!=')
 
 t3_canvas.tag_bind(t3_row2_shape7, "<Button-1>", t3_row2_button7_code)
 
+def t3_row2_button7_removal(self):
+	
+	argument_point_mover(2)
+
+	line_editor('!=', '!=', 'symbol')
+
+	canvas.delete(t3_row2_shape7_on_canvas)
+
+t3_canvas.tag_bind(t3_row2_shape7, "<Button-3>", t3_row2_button7_removal)
+
 def t3_row3_button1_code(self):
 
-	argument_point_mover()
+	argument_point_mover(0)
 
-	t3_points_on_canvas = [150+argument_point_adjustor, 250]
-	t3_shape1_on_canvas = canvas.create_image(t3_points_on_canvas, image = t3_row3_block1)
+	global t3_row3_shape1_on_canvas
+	global t3_row3_shape1_user_input_hour
+	global t3_row3_shape1_user_input_minute
 
-	user_inp = simpledialog.askstring("Time Input","Please enter time in HH:MM format")
+	t3_row3_points1_on_canvas = [150+argument_point_adjustor, 250]
+	t3_row3_shape1_on_canvas = canvas.create_image(t3_row3_points1_on_canvas, image = t3_row3_block1)
 
-	user_input_hour,user_input_minute = user_inp.split(':')
+	t3_row3_shape1_user_input = simpledialog.askstring("Time Input","Please enter time in HH:MM format")
+
+	t3_row3_shape1_user_input_hour,t3_row3_shape1_user_input_minute = t3_row3_shape1_user_input.split(':')
 
 	if user_input_hour  is None:
 		print ('Incorrect hour value')
 		return 	
 
 	elif user_input_minute is None:
-		print ('Incorrect minute vlaue')
+		print ('Incorrect minute value')
 		return
 
 	else: 
 
-		line_to_edit = 'user_input_hour'
-		what_to_edit ='user_input_hour'
-		the_edit = user_input_hour
-
-		line_editor(line_to_edit, what_to_edit, the_edit)
-
-		line_to_edit = 'user_input_minute'
-		what_to_edit ='user_input_minute'
-		the_edit = user_input_minute
-
-		line_editor(line_to_edit, what_to_edit, the_edit)
+		line_editor('user_input_hour', 'user_input_hour', t3_row3_shape1_user_input_hour)
+		line_editor('user_input_minute', 'user_input_minute', t3_row3_shape1_user_input_minute)
 
 t3_canvas.tag_bind(t3_row3_shape1, "<Button-1>", t3_row3_button1_code)
 
+def t3_row3_button1_removal(self):
+	
+	argument_point_mover(2)
+
+	line_editor(t3_row3_shape1_user_input_hour, t3_row3_shape1_user_input_hour, 'user_input_hour')
+	line_editor(t3_row3_shape1_user_input_minute, t3_row3_shape1_user_input_minute, 'user_input_minute')
+
+	canvas.delete(t3_row3_shape1_on_canvas)
+
+t3_canvas.tag_bind(t3_row3_shape1, "<Button-3>", t3_row3_button1_removal)
+
 def t3_row3_button2_code(self):
 
-	argument_point_mover()
+	argument_point_mover(0)
 
-	t3_points_on_canvas = [150+argument_point_adjustor, 250]
-	t3_shape1_on_canvas = canvas.create_image(t3_points_on_canvas, image = t3_row3_block1)
+	global t3_row3_shape2_on_canvas
+	global t3_row3_shape2_user_input_date
+
+	t3_row3_points2_on_canvas = [150+argument_point_adjustor, 250]
+	t3_row3_shape2_on_canvas = canvas.create_image(t3_row3_shape2_on_canvas, image = t3_row3_block1)
 
 	to_replace = '#dateprep'
 	replacement = '        user_input_date = "DayMonthYear"\n        InputDate = datetime.strptime(user_input_date, "%d-%m-%Y")\n        InputDate = InputDate.date()\n'
 
 	line_replece(to_replace,replacement)
 
-	user_input_date = simpledialog.askstring("Date Input","Please enter the date in a DD-MM-YYYY format")
+	t3_row3_shape2_user_input_date = simpledialog.askstring("Date Input","Please enter the date in a DD-MM-YYYY format")
 
-	line_to_edit = 'user_input_date = "DayMonthYear"'
-	what_to_edit ='DayMonthYear'
-	the_edit = user_input_date
-
-	line_editor(line_to_edit, what_to_edit, the_edit)
-
-	line_to_edit = 'userinput'
-	what_to_edit ='userinput'
-	the_edit = 'InputDate'
-
-	line_editor(line_to_edit, what_to_edit, the_edit)
+	line_editor('user_input_date = "DayMonthYear"', 'DayMonthYear', t3_row3_shape2_user_input_date)
+	line_editor('userinput', 'userinput', 'InputDate')
 
 t3_canvas.tag_bind(t3_row3_shape2, "<Button-1>", t3_row3_button2_code)
 
+def t3_row3_button2_removal(self):
+	
+	argument_point_mover(2)
+
+	to_replace ='         user_input_date = "DayMonthYear"\n        InputDate = datetime.strptime(user_input_date, "%d-%m-%Y")\n        InputDate = InputDate.date()\n'
+	replacement = '#dateprep'
+	line_replece(to_replace,replacement)
+
+	line_editor(user_input_date, user_input_date, 'DayMonthYear')
+	line_editor('InputDate', 'InputDate', 'userinput')	
+
+	canvas.delete(t3_row3_shape2_on_canvas)
+
+t3_canvas.tag_bind(t3_row3_shape2, "<Button-3>", t3_row3_button2_removal)
+
 def t3_row3_button3_code(self):
 
-	argument_point_mover()
+	argument_point_mover(0)
 
-	t3_points3_on_canvas = [150+argument_point_adjustor, 250]
-	t3_shape3_on_canvas = canvas.create_image(t3_points3_on_canvas, image = t3_row3_block3)
+	global t3_row3_shape3_on_canvas
+	global t3_row3_shape3_user_input_minute
+	global t3_row3_shape3_user_input_hour
+	global t3_row3_shape3_user_input_date
 
-	user_input_time = simpledialog.askstring("Time Input","Please enter time in HH:MM format")
+	t3_row3_points3_on_canvas = [150+argument_point_adjustor, 250]
+	t3_row3_shape3_on_canvas = canvas.create_image(t3_row3_points3_on_canvas, image = t3_row3_block3)
 
-	user_input_hour,user_input_minute = user_input_time.split(':')
+	t3_row3_shape3_user_input_time = simpledialog.askstring("Time Input","Please enter time in HH:MM format")
+
+	t3_row3_shape3_user_input_hour,t3_row3_shape3_user_input_minute = t3_row3_shape3_user_input_time.split(':')
 
 	if user_input_hour  is None:
 		print ('Incorrect hour value')
 		return 	
 
 	elif user_input_minute is None:
-		print ('Incorrect minute vlaue')
+		print ('Incorrect minute value')
 		return
 
 	else: 
 
-		line_to_edit = 'user_input_hour'
-		what_to_edit ='user_input_hour'
-		the_edit = user_input_hour
-
-		line_editor(line_to_edit, what_to_edit, the_edit)
-
-		line_to_edit = 'user_input_minute'
-		what_to_edit ='user_input_minute'
-		the_edit = user_input_minute
-
-		line_editor(line_to_edit, what_to_edit, the_edit)
+		line_editor('user_input_hour', 'user_input_hour', t3_row3_shape3_user_input_hour)
+		line_editor('user_input_minute', 'user_input_minute', t3_row3_shape3_user_input_minute)
 
 	to_replace = '#dateprep'
 	replacement = '        user_input_date = "DayMonthYear"\n        InputDate = datetime.strptime(user_input_date, "%d-%m-%Y")\n        InputDate = InputDate.date()\n'
 
 	line_replece(to_replace,replacement)
 
-	user_input_date = simpledialog.askstring("Date Input","Please enter the date in a DD-MM-YYYY format")
+	t3_row3_shape3_user_input_date = simpledialog.askstring("Date Input","Please enter the date in a DD-MM-YYYY format")
 
-	line_to_edit = 'user_input_date = "DayMonthYear"'
-	what_to_edit ='DayMonthYear'
-	the_edit = user_input_date
-
-	line_editor(line_to_edit, what_to_edit, the_edit)
-
-	line_to_edit = 'userinput'
-	what_to_edit ='userinput'
-	the_edit = 'InputDate'
-
-	line_editor(line_to_edit, what_to_edit, the_edit)
+	line_editor('user_input_date = "DayMonthYear"', 'DayMonthYear', ut3_row3_shape3_ser_input_date)
+	line_editor('userinput', 'userinput', 'InputDate')
 
 t3_canvas.tag_bind(t3_row3_shape3, "<Button-1>", t3_row3_button3_code)
 
+
+def t3_row3_button3_removal(self):
+
+	argument_point_mover(2)
+
+	line_editor(t3_row3_shape3_user_input_hour, t3_row3_shape3_user_input_hour, 'user_input_hour')
+	line_editor(t3_row3_shape3_user_input_minute, t3_row3_shape3_user_input_minute, 'user_input_minute')
+
+	to_replace ='         user_input_date = "DayMonthYear"\n        InputDate = datetime.strptime(user_input_date, "%d-%m-%Y")\n        InputDate = InputDate.date()\n'
+	replacement = '#dateprep'
+	line_replece(to_replace,replacement)
+
+	line_editor(t3_row3_shape3_user_input_date, t3_row3_shape3_user_input_date, 'DayMonthYear')
+	line_editor('InputDate', 'InputDate', 'userinput')	
+
+	canvas.delete(t3_row3_shape3_on_canvas)
+
+t3_canvas.tag_bind(t3_row3_shape3, "<Button-3>", t3_row3_button3_removal)
+
 def t4_button1_code(self):
 	
+	global t4_shape1_on_canvas
+	global t4_button1_user_input
+
 	t4_points1_on_canvas = [70+point_adjustor, 250]
 	t4_shape1_on_canvas = canvas.create_image(t4_points1_on_canvas, image = t4_block1)
 
-	user_inp = simpledialog.askstring("Sentance Response","Please enter your dialog")
+	t4_button1_user_input = simpledialog.askstring("Sentance Response","Please enter your dialog")
 
-	to_replace = '#response'
-	replacement = '           self.speak_dialog("DialogResponse")\n'
+	line_replece('#response','           self.speak_dialog("DialogResponse")\n')
 
-	line_replece(to_replace,replacement)
+	line_addition('self.speak_dialog("DialogResponse")','           #response\n')
 
-	what_to_find = 'self.speak_dialog("DialogResponse")'
-	what_to_add = '           #response\n'
+	line_editor('self.speak_dialog("DialogResponse")', 'DialogResponse', t4_button1_user_input)
 
-	line_addition(what_to_find,what_to_add)
-
-
-	line_to_edit = 'self.speak_dialog("DialogResponse")'
-	what_to_edit ='DialogResponse'
-	the_edit = user_inp
-
-	line_editor(line_to_edit, what_to_edit, the_edit)
-
-	size_variant = -171
-	point_mover(size_variant)
+	point_mover(-171)
 t4_canvas.tag_bind(t4_shape1, "<Button-1>", t4_button1_code)
 
+def t4_button1_removal(self):
+	
+	line_deletion(t4_button1_user_input)
+	line_deletion('self.speak_dialog("")')
+
+	canvas.delete(t4_shape1_on_canvas)
+
+	point_mover(-349)
+
+t4_canvas.tag_bind(t4_shape1, "<Button-3>", t4_button1_removal)
+
 def t4_button2_code(self):
+
+	global t4_shape2_on_canvas
+	global t4_button2_user_input
+
 	t4_points_on_canvas = [70+point_adjustor, 250]
 	t4_shape2_on_canvas = canvas.create_image(t4_points_on_canvas, image = t4_block2)
 
-	user_inp = simpledialog.askstring("Sentance Response","Please enter the website url (include https//www.)")
+	t4_button2_user_input = simpledialog.askstring("Sentance Response","Please enter the website url (include https//www.)")
 
-	if user_inp  == "":
-		user_inp = 'https://www.google.com' 
+	if t4_button2_user_input  == "":
+		t4_button2_user_input = 'https://www.google.com' 
 
-	what_to_find = 'from mycroft import MycroftSkill, intent_file_handler'
-	what_to_add = 'import webbrowser\n'
+	line_addition('from mycroft import MycroftSkill, intent_file_handler','import webbrowser\n')
 
-	line_addition(what_to_find,what_to_add)
+	line_replece('#response','           webbrowser.open("https://www.google.com", new=2)\n')
 
-	to_replace = '#response'
-	replacement = '           webbrowser.open("https://www.google.com", new=2)\n'
+	line_editor('webbrowser.open("https://www.google.com", new=2)', 'https://www.google.com', t4_button2_user_input)
 
-	line_replece(to_replace,replacement)
+	line_addition('webbrowser.open("','           #response\n')
 
-	line_to_edit = 'webbrowser.open("https://www.google.com", new=2)'
-	what_to_edit ='https://www.google.com'
-	the_edit = user_inp
-
-	line_editor(line_to_edit, what_to_edit, the_edit)
-
-	what_to_find = 'webbrowser.open("'
-	what_to_add = '           #response\n'
-
-	line_addition(what_to_find,what_to_add)
-
-
-	size_variant = -171
-	point_mover(size_variant)
+	point_mover(-171)
 t4_canvas.tag_bind(t4_shape2, "<Button-1>", t4_button2_code)
 
+def t4_button2_removal(self):
+	
+	line_deletion('import webbrowser')
+
+	if t4_button2_user_input  != "":
+		line_deletion('webbrowser.open("')
+		line_deletion(t4_button2_user_input)
+		line_deletion('", new=2)')
+	else:
+		line_deletion('webbrowser.open("https://www.google.com", new=2)')
+
+	canvas.delete(t4_shape2_on_canvas)
+
+	point_mover(-349)
+
+t4_canvas.tag_bind(t4_shape2, "<Button-3>", t4_button2_removal)
+
 def t5_button1_code(self):
-	statement_block_tally()
+
+	statement_block_tally(1)
 
 	global t5_shape1_on_canvas
 
 	t5_points1_on_canvas = [150+point_adjustor, 250]
 	t5_shape1_on_canvas = canvas.create_image(t5_points1_on_canvas, image = t5_block1)
 
-	to_replace = '#ifstatement'
-	replacement = '        if variablename symbol userinput:\n'
-	line_replece(to_replace,replacement)
+	line_replece('#ifstatement','        if variablename symbol userinput:\n')
 
-	what_to_find = 'if variablename symbol userinput'
-	what_to_add = '        #elsestatement'
+	line_addition('if variablename symbol userinput','        #elsestatement')
 
-	line_addition(what_to_find,what_to_add)
+	line_addition('        if variablename symbol userinput:','            #response\n')
 
-	what_to_find = '        if variablename symbol userinput:'
-	what_to_add = '            #response\n'
-
-	line_addition(what_to_find,what_to_add)
-	size_variant = -11
-	point_mover(size_variant)
+	point_mover(-11)
 t5_canvas.tag_bind(t5_shape1, "<Button-1>", t5_button1_code)
 
 def t5_button1_removal(self):
 	
-	to_replace = 'if variablename symbol userinput:'
-	replacement = '        #ifstatement\n'
-	line_replece(to_replace,replacement)
+	statement_block_tally(0)
+	argument_point_mover(1)
 
-	delete_this ='elsestatement'
-	line_deletion(delete_this)
+	line_replece('if variablename symbol userinput:','        #ifstatement\n')
 
-	delete_this ='#response'
-	line_deletion(delete_this)
+	line_deletion('elsestatement')
+
+	line_deletion('#response')
 
 	canvas.delete(t5_shape1_on_canvas)
-	size_variant = -509
-	point_mover(size_variant)
+
+	point_mover(-509)
 t5_canvas.tag_bind(t5_shape1, "<Button-3>", t5_button1_removal)
 
 def t5_button2_code(self):
-	statement_block_tally()
+
+	statement_block_tally(1)
 
 	global t5_shape2_on_canvas
 
 	t5_points_on_canvas = [150+point_adjustor, 250]
 	t5_shape2_on_canvas = canvas.create_image(t5_points_on_canvas, image = t5_block2)
-		
-	delete_this ='#response'
-	line_deletion(delete_this)
 
-	to_replace = '#elsestatement'
-	replacement = '        elif variablename symbol userinput:\n'
-	line_replece(to_replace,replacement)
+	line_deletion('#response')
 
-	what_to_find = 'elif variablename symbol userinput'
-	what_to_add = '        #elsestatement'
+	line_replece('#elsestatement','        elif variablename symbol userinput:\n')
 
-	line_addition(what_to_find,what_to_add)
+	line_addition('elif variablename symbol userinput','        #elsestatement')
 
-	what_to_find = 'elif variablename symbol userinput:'
-	what_to_add = '           #response\n'
+	line_addition('elif variablename symbol userinput:','           #response\n')
 
-	line_addition(what_to_find,what_to_add)
-
-	size_variant = -11
-	point_mover(size_variant)
+	point_mover(-11)
 t5_canvas.tag_bind(t5_shape2, "<Button-1>", t5_button2_code)
 
 def t5_button2_removal(self):
 	
-	delete_this ='#response'
-	line_deletion(delete_this)
+	statement_block_tally(0)
+	argument_point_mover(1)
 
-	to_replace = 'elif variablename symbol userinput:'
-	replacement = '        #response\n'
-	line_replece(to_replace,replacement)
+	line_deletion('#response')
+
+	line_replece('elif variablename symbol userinput:','        #response\n')
 
 	canvas.delete(t5_shape2_on_canvas)
-	size_variant = -509
-	point_mover(size_variant)
+
+	point_mover(-509)
 t5_canvas.tag_bind(t5_shape2, "<Button-3>", t5_button2_removal)
 
 def t5_button3_code(self):
-	statement_block_tally()
+
+	statement_block_tally(1)
 
 	global t5_shape3_on_canvas
 
 	t5_points3_on_canvas = [70+point_adjustor, 250]
 	t5_shape3_on_canvas = canvas.create_image(t5_points3_on_canvas, image = t5_block3)
 
-	delete_this ='#response'
-	line_deletion(delete_this)	
+	line_deletion('#response')	
 
-	to_replace = '#elsestatement'
-	replacement = '        else:\n'
-	line_replece(to_replace,replacement)
+	line_replece('#elsestatement','        else:\n')
 
-	what_to_find = 'else:'
-	what_to_add = '    #response'
+	line_addition('else:','    #response')
 
-	line_addition(what_to_find,what_to_add)
-
-	size_variant = -171
-	point_mover(size_variant)
+	point_mover(-171)
 t5_canvas.tag_bind(t5_shape3, "<Button-1>", t5_button3_code)
 
 def t5_button3_removal(self):
 	
-	delete_this ='#response'
-	line_deletion(delete_this)
+	statement_block_tally(0)
+	argument_point_mover(1)
 
-	to_replace = 'else:'
-	replacement = '       #response\n       #elsestatement\n'
-	line_replece(to_replace,replacement)
+	line_deletion('#response')
+
+	line_replece('else:','       #response\n       #elsestatement\n')
 
 	canvas.delete(t5_shape3_on_canvas)
-	size_variant = -509
-	point_mover(size_variant)
+
+	point_mover(-509)
 t5_canvas.tag_bind(t5_shape3, "<Button-3>", t5_button3_removal)
 
 root.mainloop()	
