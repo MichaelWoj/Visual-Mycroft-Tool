@@ -673,10 +673,10 @@ def t3_row3_button2_code(self):
 	global t3_row3_shape2_user_input_date
 
 	t3_row3_points2_on_canvas = [150+argument_point_adjustor, 250]
-	t3_row3_shape2_on_canvas = canvas.create_image(t3_row3_shape2_on_canvas, image = t3_row3_block1)
+	t3_row3_shape2_on_canvas = canvas.create_image(t3_row3_points2_on_canvas, image = t3_row3_block1)
 
 	to_replace = '#dateprep'
-	replacement = '        user_input_date = "DayMonthYear"\n        InputDate = datetime.strptime(user_input_date, "%d-%m-%Y")\n        InputDate = InputDate.date()\n'
+	replacement = '        user_input_date = "DayMonthYear"\n        InputDate = datetime.strptime(user_input_date, "%d-%m-%Y")\n        InputDate = InputDate.date()\n        #dateprep\n'
 
 	line_replece(to_replace,replacement)
 
@@ -718,11 +718,11 @@ def t3_row3_button3_code(self):
 
 	t3_row3_shape3_user_input_hour,t3_row3_shape3_user_input_minute = t3_row3_shape3_user_input_time.split(':')
 
-	if user_input_hour  is None:
+	if t3_row3_shape3_user_input_hour  is None:
 		print ('Incorrect hour value')
 		return 	
 
-	elif user_input_minute is None:
+	elif t3_row3_shape3_user_input_minute is None:
 		print ('Incorrect minute value')
 		return
 
@@ -732,14 +732,14 @@ def t3_row3_button3_code(self):
 		line_editor('user_input_minute', 'user_input_minute', t3_row3_shape3_user_input_minute)
 
 	to_replace = '#dateprep'
-	replacement = '        user_input_date = "DayMonthYear"\n        InputDate = datetime.strptime(user_input_date, "%d-%m-%Y")\n        InputDate = InputDate.date()\n'
+	replacement = '        user_input_dt_date = "DayMonthYear"\n        DTInputDate = datetime.strptime(user_input_dt_date, "%d-%m-%Y")\n        DTInputDate = DTInputDate.date()\n        #dateprep\n'
 
 	line_replece(to_replace,replacement)
 
 	t3_row3_shape3_user_input_date = simpledialog.askstring("Date Input","Please enter the date in a DD-MM-YYYY format")
 
-	line_editor('user_input_date = "DayMonthYear"', 'DayMonthYear', ut3_row3_shape3_ser_input_date)
-	line_editor('userinput', 'userinput', 'InputDate')
+	line_editor('user_input_dt_date = "DayMonthYear"', 'DayMonthYear', t3_row3_shape3_user_input_date)
+	line_editor('userinput', 'userinput', 'DTInputDate')
 
 t3_canvas.tag_bind(t3_row3_shape3, "<Button-1>", t3_row3_button3_code)
 
@@ -751,12 +751,12 @@ def t3_row3_button3_removal(self):
 	line_editor(t3_row3_shape3_user_input_hour, t3_row3_shape3_user_input_hour, 'user_input_hour')
 	line_editor(t3_row3_shape3_user_input_minute, t3_row3_shape3_user_input_minute, 'user_input_minute')
 
-	to_replace ='         user_input_date = "DayMonthYear"\n        InputDate = datetime.strptime(user_input_date, "%d-%m-%Y")\n        InputDate = InputDate.date()\n'
+	to_replace ='         user_input_dt_date = "DayMonthYear"\n        DTInputDate = datetime.strptime(user_input_dt_date, "%d-%m-%Y")\n        DTInputDate = DTInputDate.date()\n'
 	replacement = '#dateprep'
 	line_replece(to_replace,replacement)
 
 	line_editor(t3_row3_shape3_user_input_date, t3_row3_shape3_user_input_date, 'DayMonthYear')
-	line_editor('InputDate', 'InputDate', 'userinput')	
+	line_editor('DTInputDate', 'DTInputDate', 'userinput')	
 
 	canvas.delete(t3_row3_shape3_on_canvas)
 
