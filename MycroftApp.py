@@ -192,6 +192,10 @@ t2_block2 = PhotoImage(file="images/Functions/GetCurrentDate.png")
 t2_shape2 = t2_canvas.create_image(100, 150, image = t2_block2)
 t2_canvas.grid(column = 0)
 
+t2_block3 = PhotoImage(file="images/Functions/GetCurrentDateTime.png")
+t2_shape3 = t2_canvas.create_image(100, 250, image = t2_block3)
+t2_canvas.grid(column = 0)
+
 t3_row1_block1 = PhotoImage(file="images/Argument/Diamond/CurrentTimeDiamond.png")
 t3_row1_shape1 = t3_canvas.create_image(50, 50, image = t3_row1_block1)
 t3_canvas.grid(column = 0)
@@ -343,6 +347,30 @@ def t2_button2_removal(self):
 	point_mover(-349)
 
 t2_canvas.tag_bind(t2_shape2, "<Button-3>", t2_button2_removal)
+
+def t2_button3_code(self):
+
+	global t2_shape3_on_canvas
+
+	t2_points3_on_canvas = [70+point_adjustor, 250]
+	t2_shape3_on_canvas = canvas.create_image(t2_points3_on_canvas, image = t2_block3)
+
+	line_addition('self.speak_dialog(', '        CurrentDate = date.today()\n        now = datetime.now().time()\n        #dateprep\n        #ifstatement\n')
+
+	point_mover(-171)
+t2_canvas.tag_bind(t2_shape3, "<Button-1>", t2_button3_code)	
+
+def t2_button3_removal(self):
+	
+	line_deletion('CurrentDate = date.today()')
+	line_deletion('now = datetime.now().time()')
+	line_deletion('#dateprep')
+	line_deletion('#ifstatement')
+
+	canvas.delete(t2_shape3_on_canvas)
+	point_mover(-349)
+
+t2_canvas.tag_bind(t2_shape3, "<Button-3>", t2_button3_removal)
 
 def t3_row1_button1_code(self):
 
