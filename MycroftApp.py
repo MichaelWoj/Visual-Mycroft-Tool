@@ -874,10 +874,7 @@ t4_canvas.tag_bind(t4_shape2, "<Button-1>", t4_button2_code)
 def t4_button2_removal(self):
 	
 	line_deletion('import webbrowser')
-	line_deletion('webbrowser.open("')
-	line_deletion(t4_button2_user_input)
-	line_deletion('", new=2)')
-
+	line_deletion('webbrowser.open("'+t4_button2_user_input+'", new=2)')
 
 	canvas.delete(t4_shape2_on_canvas)
 
