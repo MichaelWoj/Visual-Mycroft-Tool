@@ -2,6 +2,7 @@ from tkinter import *
 from tkinter import ttk
 from tkinter import filedialog
 from tkinter import simpledialog
+from tkinter import messagebox
 from datetime import datetime, date
 import os, subprocess, fileinput, subprocess
 
@@ -631,31 +632,41 @@ t3_canvas.tag_bind(t3_row2_shape7, "<Button-3>", t3_row2_button7_removal)
 
 def t3_row3_button1_code(self):
 
-	argument_point_mover(0)
-
 	global t3_row3_shape1_on_canvas
 	global t3_row3_shape1_user_input_hour
 	global t3_row3_shape1_user_input_minute
 
-	t3_row3_points1_on_canvas = [150+argument_point_adjustor, 250]
-	t3_row3_shape1_on_canvas = canvas.create_image(t3_row3_points1_on_canvas, image = t3_row3_block1)
 
 	t3_row3_shape1_user_input = simpledialog.askstring("Time Input","Please enter time in HH:MM format")
 
-	t3_row3_shape1_user_input_hour,t3_row3_shape1_user_input_minute = t3_row3_shape1_user_input.split(':')
+	if t3_row3_shape1_user_input is None:
+		return:
 
-	if t3_row3_shape1_user_input_hour  is None:
-		print ('Incorrect hour value')
-		return 	
+	else:
+		if t3_row3_shape1_user_input is '':
+			messagebox.showerror(title='No input', message='No input was given')
+			return
 
-	elif t3_row3_shape1_user_input_minute is None:
-		print ('Incorrect minute value')
-		return
+		t3_row3_shape1_user_input_hour,t3_row3_shape1_user_input_minute = t3_row3_shape1_user_input.split(':')
 
-	else: 
+		if t3_row3_shape1_user_input_hour.isnumeric() == False:
+			messagebox.showerror(title="Incorrect Hour", message="Hour field contains non numerical characters")
+			return 	
 
-		line_editor('user_input_hour', 'user_input_hour', t3_row3_shape1_user_input_hour)
-		line_editor('user_input_minute', 'user_input_minute', t3_row3_shape1_user_input_minute)
+		elif t3_row3_shape1_user_input_minute.isnumeric() == False:
+			messagebox.showerror(title="Incorrect Minute", message="Minute field contains non numerical characters")
+			return
+
+		else: 
+	
+			argument_point_mover(0)
+
+			t3_row3_points1_on_canvas = [150+argument_point_adjustor, 250]
+			t3_row3_shape1_on_canvas = canvas.create_image(t3_row3_points1_on_canvas, image = t3_row3_block1)
+
+			t3_row3_shape1_user_input_hour,t3_row3_shape1_user_input_minute = t3_row3_shape1_user_input.split(':')
+			line_editor('user_input_hour', 'user_input_hour', t3_row3_shape1_user_input_hour)
+			line_editor('user_input_minute', 'user_input_minute', t3_row3_shape1_user_input_minute)
 
 t3_canvas.tag_bind(t3_row3_shape1, "<Button-1>", t3_row3_button1_code)
 
@@ -672,26 +683,35 @@ t3_canvas.tag_bind(t3_row3_shape1, "<Button-3>", t3_row3_button1_removal)
 
 def t3_row3_button2_code(self):
 
-	argument_point_mover(0)
-
-	date_variable_counter(1)
-	date_variable_number_str = str(date_variable_number)
-
 	global t3_row3_shape2_on_canvas
 	global t3_row3_shape2_user_input_date
 
-	t3_row3_points2_on_canvas = [150+argument_point_adjustor, 250]
-	t3_row3_shape2_on_canvas = canvas.create_image(t3_row3_points2_on_canvas, image = t3_row3_block1)
-
-	to_replace = '#dateprep'
-	replacement = '        user_input_date'+date_variable_number_str+' = "DayMonthYear"\n        InputDate'+date_variable_number_str+' = datetime.strptime(user_input_date'+date_variable_number_str+', "%d-%m-%Y")\n        InputDate'+date_variable_number_str+' = InputDate'+date_variable_number_str+'.date()\n        #dateprep\n'
-
-	line_replece(to_replace,replacement)
-
 	t3_row3_shape2_user_input_date = simpledialog.askstring("Date Input","Please enter the date in a DD-MM-YYYY format")
 
-	line_editor('user_input_date'+date_variable_number_str+' = "DayMonthYear"', 'DayMonthYear', t3_row3_shape2_user_input_date)
-	line_editor('userinput', 'userinput', 'InputDate'+date_variable_number_str)
+	if t3_row3_shape2_user_input_date is None:
+		return
+
+	else:
+		if t3_row3_shape2_user_input_date is '':
+			messagebox.showerror(title="Incorrect Date", message="No date was given")
+			return		
+
+		else:
+			argument_point_mover(0)
+
+			date_variable_counter(1)
+			date_variable_number_str = str(date_variable_number)
+
+			t3_row3_points2_on_canvas = [150+argument_point_adjustor, 250]
+			t3_row3_shape2_on_canvas = canvas.create_image(t3_row3_points2_on_canvas, image = t3_row3_block1)
+
+			to_replace = '#dateprep'
+			replacement = '        user_input_date'+date_variable_number_str+' = "DayMonthYear"\n        InputDate'+date_variable_number_str+' = datetime.strptime(user_input_date'+date_variable_number_str+', "%d-%m-%Y")\n        InputDate'+date_variable_number_str+' = InputDate'+date_variable_number_str+'.date()\n        #dateprep\n'
+
+			line_replece(to_replace,replacement)
+
+			line_editor('user_input_date'+date_variable_number_str+' = "DayMonthYear"', 'DayMonthYear', t3_row3_shape2_user_input_date)
+			line_editor('userinput', 'userinput', 'InputDate'+date_variable_number_str)
 
 t3_canvas.tag_bind(t3_row3_shape2, "<Button-1>", t3_row3_button2_code)
 
@@ -725,35 +745,47 @@ def t3_row3_button3_code(self):
 	global t3_row3_shape3_user_input_hour
 	global t3_row3_shape3_user_input_date
 
-	t3_row3_points3_on_canvas = [150+argument_point_adjustor, 250]
-	t3_row3_shape3_on_canvas = canvas.create_image(t3_row3_points3_on_canvas, image = t3_row3_block3)
 
 	t3_row3_shape3_user_input_time = simpledialog.askstring("Time Input","Please enter time in HH:MM format")
-
-	t3_row3_shape3_user_input_hour,t3_row3_shape3_user_input_minute = t3_row3_shape3_user_input_time.split(':')
-
-	if t3_row3_shape3_user_input_hour  is None:
-		print ('Incorrect hour value')
-		return 	
-
-	elif t3_row3_shape3_user_input_minute is None:
-		print ('Incorrect minute value')
+	t3_row3_shape3_user_input_date = simpledialog.askstring("Date Input","Please enter the date in a DD-MM-YYYY format")
+	
+	if t3_row3_shape3_user_input_time or t3_row3_shape3_user_input_date is None:
 		return
 
-	else: 
+	else:
+		if t3_row3_shape3_user_input_time is '':
+			messagebox.showerror(title='No time input', message='No time input was given')
+			return
 
-		line_editor('user_input_hour', 'user_input_hour', t3_row3_shape3_user_input_hour)
-		line_editor('user_input_minute', 'user_input_minute', t3_row3_shape3_user_input_minute)
+		elif t3_row3_shape3_user_input_date is '':
+			messagebox.showerror(title='No date input', message='No date input was given')
+			return	
 
-	to_replace = '#dateprep'
-	replacement = '        user_input_date'+date_variable_number_str+' = "DayMonthYear"\n        InputDate'+date_variable_number_str+' = datetime.strptime(user_input_date'+date_variable_number_str+', "%d-%m-%Y")\n        InputDate'+date_variable_number_str+' = InputDate'+date_variable_number_str+'.date()\n        #dateprep\n'
+		t3_row3_shape3_user_input_hour,t3_row3_shape3_user_input_minute = t3_row3_shape3_user_input_time.split(':')
 
-	line_replece(to_replace,replacement)
+		if t3_row3_shape3_user_input_hour.isnumeric() == False:
+			print ('Incorrect hour value')
+			return 	
 
-	t3_row3_shape3_user_input_date = simpledialog.askstring("Date Input","Please enter the date in a DD-MM-YYYY format")
+		elif t3_row3_shape3_user_input_minute.isnumeric() == False:
+			print ('Incorrect minute value')
+			return
 
-	line_editor('user_input_date'+date_variable_number_str+' = "DayMonthYear"', 'DayMonthYear', t3_row3_shape3_user_input_date)
-	line_editor('userinput', 'userinput', 'InputDate'+date_variable_number_str)
+		else: 
+
+			t3_row3_points3_on_canvas = [150+argument_point_adjustor, 250]
+			t3_row3_shape3_on_canvas = canvas.create_image(t3_row3_points3_on_canvas, image = t3_row3_block3)
+
+			line_editor('user_input_hour', 'user_input_hour', t3_row3_shape3_user_input_hour)
+			line_editor('user_input_minute', 'user_input_minute', t3_row3_shape3_user_input_minute)
+
+			to_replace = '#dateprep'
+			replacement = '        user_input_date'+date_variable_number_str+' = "DayMonthYear"\n        InputDate'+date_variable_number_str+' = datetime.strptime(user_input_date'+date_variable_number_str+', "%d-%m-%Y")\n        InputDate'+date_variable_number_str+' = InputDate'+date_variable_number_str+'.date()\n        #dateprep\n'
+
+			line_replece(to_replace,replacement)
+
+			line_editor('user_input_date'+date_variable_number_str+' = "DayMonthYear"', 'DayMonthYear', t3_row3_shape3_user_input_date)
+			line_editor('userinput', 'userinput', 'InputDate'+date_variable_number_str)
 
 t3_canvas.tag_bind(t3_row3_shape3, "<Button-1>", t3_row3_button3_code)
 
@@ -781,18 +813,23 @@ def t4_button1_code(self):
 	global t4_shape1_on_canvas
 	global t4_button1_user_input
 
-	t4_points1_on_canvas = [70+point_adjustor, 250]
-	t4_shape1_on_canvas = canvas.create_image(t4_points1_on_canvas, image = t4_block1)
-
 	t4_button1_user_input = simpledialog.askstring("Sentance Response","Please enter your dialog")
 
-	line_replece('#response','           self.speak_dialog("DialogResponse")\n')
+	if t4_button1_user_input is None:
+		return
 
-	line_addition('self.speak_dialog("DialogResponse")','           #response\n')
+	else
+		t4_points1_on_canvas = [70+point_adjustor, 250]
+		t4_shape1_on_canvas = canvas.create_image(t4_points1_on_canvas, image = t4_block1)
 
-	line_editor('self.speak_dialog("DialogResponse")', 'DialogResponse', t4_button1_user_input)
+		line_replece('#response','           self.speak_dialog("DialogResponse")\n')
 
-	point_mover(-171)
+		line_addition('self.speak_dialog("DialogResponse")','           #response\n')
+
+		line_editor('self.speak_dialog("DialogResponse")', 'DialogResponse', t4_button1_user_input)
+
+		point_mover(-171)
+
 t4_canvas.tag_bind(t4_shape1, "<Button-1>", t4_button1_code)
 
 def t4_button1_removal(self):
@@ -811,35 +848,36 @@ def t4_button2_code(self):
 	global t4_shape2_on_canvas
 	global t4_button2_user_input
 
-	t4_points_on_canvas = [70+point_adjustor, 250]
-	t4_shape2_on_canvas = canvas.create_image(t4_points_on_canvas, image = t4_block2)
+	t4_button2_user_input = simpledialog.askstring("Sentance Response","Please enter the website url (include https//)")
 
-	t4_button2_user_input = simpledialog.askstring("Sentance Response","Please enter the website url (include https//www.)")
+	if t4_button2_user_input is None:
+		return
 
-	if t4_button2_user_input  == "":
-		t4_button2_user_input = 'https://www.google.com' 
+	else:
+		t4_points_on_canvas = [70+point_adjustor, 250]
+		t4_shape2_on_canvas = canvas.create_image(t4_points_on_canvas, image = t4_block2)
 
-	line_addition('from mycroft import MycroftSkill, intent_file_handler','import webbrowser\n')
+		if t4_button2_user_input  == "":
+			t4_button2_user_input = 'https://' 
+	
+		line_addition('from mycroft import MycroftSkill, intent_file_handler','import webbrowser\n')
+	
+		line_replece('#response','           webbrowser.open("url", new=2)\n')
 
-	line_replece('#response','           webbrowser.open("https://www.google.com", new=2)\n')
+		line_editor('webbrowser.open("url", new=2)', 'url', t4_button2_user_input)
 
-	line_editor('webbrowser.open("https://www.google.com", new=2)', 'https://www.google.com', t4_button2_user_input)
+		line_addition('webbrowser.open("'+t4_button2_user_input+'"','           #response\n')
 
-	line_addition('webbrowser.open("','           #response\n')
-
-	point_mover(-171)
+		point_mover(-171)
 t4_canvas.tag_bind(t4_shape2, "<Button-1>", t4_button2_code)
 
 def t4_button2_removal(self):
 	
 	line_deletion('import webbrowser')
+	line_deletion('webbrowser.open("')
+	line_deletion(t4_button2_user_input)
+	line_deletion('", new=2)')
 
-	if t4_button2_user_input  != "":
-		line_deletion('webbrowser.open("')
-		line_deletion(t4_button2_user_input)
-		line_deletion('", new=2)')
-	else:
-		line_deletion('webbrowser.open("https://www.google.com", new=2)')
 
 	canvas.delete(t4_shape2_on_canvas)
 
