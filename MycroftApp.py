@@ -120,6 +120,11 @@ def line_deletion(delete_this):
 			function_line = function_line.replace(function_line,'')
 		print(function_line, end='')
 
+date_variable_number = 0
+def date_variable_counter(increase_number):
+	global date_variable_number
+	date_variable_number = date_variable_number + increase_number
+
 ## Sets up the TKinter menu
 menu = Menu(root)
 root.config(menu=menu)
@@ -669,6 +674,9 @@ def t3_row3_button2_code(self):
 
 	argument_point_mover(0)
 
+	date_variable_counter(1)
+	date_variable_number_str = str(date_variable_number)
+
 	global t3_row3_shape2_on_canvas
 	global t3_row3_shape2_user_input_date
 
@@ -676,14 +684,14 @@ def t3_row3_button2_code(self):
 	t3_row3_shape2_on_canvas = canvas.create_image(t3_row3_points2_on_canvas, image = t3_row3_block1)
 
 	to_replace = '#dateprep'
-	replacement = '        user_input_date = "DayMonthYear"\n        InputDate = datetime.strptime(user_input_date, "%d-%m-%Y")\n        InputDate = InputDate.date()\n        #dateprep\n'
+	replacement = '        user_input_date'+date_variable_number_str+' = "DayMonthYear"\n        InputDate'+date_variable_number_str+' = datetime.strptime(user_input_date'+date_variable_number_str+', "%d-%m-%Y")\n        InputDate'+date_variable_number_str+' = InputDate'+date_variable_number_str+'.date()\n        #dateprep\n'
 
 	line_replece(to_replace,replacement)
 
 	t3_row3_shape2_user_input_date = simpledialog.askstring("Date Input","Please enter the date in a DD-MM-YYYY format")
 
-	line_editor('user_input_date = "DayMonthYear"', 'DayMonthYear', t3_row3_shape2_user_input_date)
-	line_editor('userinput', 'userinput', 'InputDate')
+	line_editor('user_input_date'+date_variable_number_str+' = "DayMonthYear"', 'DayMonthYear', t3_row3_shape2_user_input_date)
+	line_editor('userinput', 'userinput', 'InputDate'+date_variable_number_str)
 
 t3_canvas.tag_bind(t3_row3_shape2, "<Button-1>", t3_row3_button2_code)
 
@@ -691,12 +699,15 @@ def t3_row3_button2_removal(self):
 	
 	argument_point_mover(2)
 
-	to_replace ='         user_input_date = "DayMonthYear"\n        InputDate = datetime.strptime(user_input_date, "%d-%m-%Y")\n        InputDate = InputDate.date()\n'
+	date_variable_counter(-1)
+	date_variable_number_str = str(date_variable_number)	
+
+	to_replace ='         user_input_date'+date_variable_number_str+' = "DayMonthYear"\n        InputDate'+date_variable_number_str+' = datetime.strptime(user_input_date'+date_variable_number_str+', "%d-%m-%Y")\n        InputDate'+date_variable_number_str+' = InputDate'+date_variable_number_str+'.date()\n'
 	replacement = '#dateprep'
 	line_replece(to_replace,replacement)
 
 	line_editor(user_input_date, user_input_date, 'DayMonthYear')
-	line_editor('InputDate', 'InputDate', 'userinput')	
+	line_editor('InputDate'+date_variable_number_str, 'InputDate'+date_variable_number_str, 'userinput')	
 
 	canvas.delete(t3_row3_shape2_on_canvas)
 
@@ -705,6 +716,9 @@ t3_canvas.tag_bind(t3_row3_shape2, "<Button-3>", t3_row3_button2_removal)
 def t3_row3_button3_code(self):
 
 	argument_point_mover(0)
+
+	date_variable_counter(1)
+	date_variable_number_str = str(date_variable_number)
 
 	global t3_row3_shape3_on_canvas
 	global t3_row3_shape3_user_input_minute
@@ -732,14 +746,14 @@ def t3_row3_button3_code(self):
 		line_editor('user_input_minute', 'user_input_minute', t3_row3_shape3_user_input_minute)
 
 	to_replace = '#dateprep'
-	replacement = '        user_input_dt_date = "DayMonthYear"\n        DTInputDate = datetime.strptime(user_input_dt_date, "%d-%m-%Y")\n        DTInputDate = DTInputDate.date()\n        #dateprep\n'
+	replacement = '        user_input_date'+date_variable_number_str+' = "DayMonthYear"\n        InputDate'+date_variable_number_str+' = datetime.strptime(user_input_date'+date_variable_number_str+', "%d-%m-%Y")\n        InputDate'+date_variable_number_str+' = InputDate'+date_variable_number_str+'.date()\n        #dateprep\n'
 
 	line_replece(to_replace,replacement)
 
 	t3_row3_shape3_user_input_date = simpledialog.askstring("Date Input","Please enter the date in a DD-MM-YYYY format")
 
-	line_editor('user_input_dt_date = "DayMonthYear"', 'DayMonthYear', t3_row3_shape3_user_input_date)
-	line_editor('userinput', 'userinput', 'DTInputDate')
+	line_editor('user_input_date'+date_variable_number_str+' = "DayMonthYear"', 'DayMonthYear', t3_row3_shape3_user_input_date)
+	line_editor('userinput', 'userinput', 'InputDate'+date_variable_number_str)
 
 t3_canvas.tag_bind(t3_row3_shape3, "<Button-1>", t3_row3_button3_code)
 
@@ -751,12 +765,12 @@ def t3_row3_button3_removal(self):
 	line_editor(t3_row3_shape3_user_input_hour, t3_row3_shape3_user_input_hour, 'user_input_hour')
 	line_editor(t3_row3_shape3_user_input_minute, t3_row3_shape3_user_input_minute, 'user_input_minute')
 
-	to_replace ='         user_input_dt_date = "DayMonthYear"\n        DTInputDate = datetime.strptime(user_input_dt_date, "%d-%m-%Y")\n        DTInputDate = DTInputDate.date()\n'
+	to_replace ='         user_input_date'+date_variable_number_str+' = "DayMonthYear"\n        InputDate'+date_variable_number_str+' = datetime.strptime(user_input_date'+date_variable_number_str+', "%d-%m-%Y")\n        InputDate'+date_variable_number_str+' = InputDate'+date_variable_number_str+'.date()\n'
 	replacement = '#dateprep'
 	line_replece(to_replace,replacement)
 
 	line_editor(t3_row3_shape3_user_input_date, t3_row3_shape3_user_input_date, 'DayMonthYear')
-	line_editor('DTInputDate', 'DTInputDate', 'userinput')	
+	line_editor('InputDate'+date_variable_number_str, 'InputDate'+date_variable_number_str, 'userinput')	
 
 	canvas.delete(t3_row3_shape3_on_canvas)
 
@@ -844,7 +858,7 @@ def t5_button1_code(self):
 
 	line_replece('#ifstatement','        if variablename symbol userinput:\n')
 
-	line_addition('if variablename symbol userinput','        #elsestatement')
+	line_addition('if variablename symbol userinput','        #elsestatement\n')
 
 	line_addition('        if variablename symbol userinput:','            #response\n')
 
@@ -858,7 +872,7 @@ def t5_button1_removal(self):
 
 	line_replece('if variablename symbol userinput:','        #ifstatement\n')
 
-	line_deletion('elsestatement')
+	line_deletion('#elsestatement')
 
 	line_deletion('#response')
 
@@ -880,7 +894,7 @@ def t5_button2_code(self):
 
 	line_replece('#elsestatement','        elif variablename symbol userinput:\n')
 
-	line_addition('elif variablename symbol userinput','        #elsestatement')
+	line_addition('elif variablename symbol userinput','        #elsestatement\n')
 
 	line_addition('elif variablename symbol userinput:','           #response\n')
 
