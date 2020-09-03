@@ -126,6 +126,11 @@ def date_variable_counter(increase_number):
 	global date_variable_number
 	date_variable_number = date_variable_number + increase_number
 
+and_or_var_number = 0
+def and_or_counter(number_variation):
+	global and_or_var_number
+	and_or_var_number = and_or_var_number + number_variation
+
 ## Sets up the TKinter menu
 menu = Menu(root)
 root.config(menu=menu)
@@ -880,17 +885,21 @@ def t5_button1_code(self):
 
 	global t5_shape1_on_canvas
 
+	and_or_var_number_str = str(and_or_var_number)
+
 	t5_points1_on_canvas = [70+point_adjustor, 250]
 	t5_shape1_on_canvas = canvas.create_image(t5_points1_on_canvas, image = t5_block1)
 
-	line_editor(': #AndOrExtension', ': #AndOrExtension', ' and #EmptyStatement:')
+	line_editor(': #AndOrExtension'+and_or_var_number_str, ': #AndOrExtension'+and_or_var_number_str, ' and #EmptyStatement:')
 
 	point_mover(-173)
 t5_canvas.tag_bind(t5_shape1, "<Button-1>", t5_button1_code)
 
 def t5_button1_removal(self):
 	
-	line_editor('and #EmptyStatement:', 'and #EmptyStatement:', ': #AndOrExtension')
+	and_or_var_number_str = str(and_or_var_number)
+
+	line_editor('and #EmptyStatement:', 'and #EmptyStatement:', ': #AndOrExtension'+and_or_var_number_str)
 
 	canvas.delete(t5_shape1_on_canvas)
 
@@ -901,19 +910,23 @@ def t5_button2_code(self):
 
 	statement_block_tally(1)
 
+	and_or_var_number_str = str(and_or_var_number)
+
 	global t5_shape2_on_canvas
 
 	t5_points2_on_canvas = [70+point_adjustor, 250]
 	t5_shape2_on_canvas = canvas.create_image(t5_points2_on_canvas, image = t5_block2)
 
-	line_editor(': #AndOrExtension', ': #AndOrExtension', ' or #EmptyStatement:')
+	line_editor(': #AndOrExtension'+and_or_var_number_str, ': #AndOrExtension'+and_or_var_number_str, ' or #EmptyStatement:')
 
 	point_mover(-173)
 t5_canvas.tag_bind(t5_shape2, "<Button-1>", t5_button2_code)
 
 def t5_button2_removal(self):
 	
-	line_editor('or #EmptyStatement:', 'or #EmptyStatement:', ': #AndOrExtension')
+	and_or_var_number_str = str(and_or_var_number)
+
+	line_editor('or #EmptyStatement:', 'or #EmptyStatement:', ': #AndOrExtension'+and_or_var_number_str)
 
 	canvas.delete(t5_shape2_on_canvas)
 
@@ -923,13 +936,16 @@ t5_canvas.tag_bind(t5_shape2, "<Button-3>", t5_button2_removal)
 def t6_button1_code(self):
 
 	statement_block_tally(1)
+	and_or_counter(1)
+
+	and_or_var_number_str = str(and_or_var_number)
 
 	global t6_shape1_on_canvas
 
 	t6_points1_on_canvas = [150+point_adjustor, 250]
 	t6_shape1_on_canvas = canvas.create_image(t6_points1_on_canvas, image = t6_block1)
 
-	line_replece('#ifstatement','        if variablename symbol userinput: #AndOrExtension\n')
+	line_replece('#ifstatement','        if variablename symbol userinput: #AndOrExtension'+and_or_var_number_str+'\n')
 
 	line_addition('if variablename symbol userinput','        #elsestatement\n')
 
@@ -943,7 +959,11 @@ def t6_button1_removal(self):
 	statement_block_tally(0)
 	argument_point_mover(1)
 
-	line_replece('if variablename symbol userinput: #AndOrExtension','        #ifstatement\n')
+	and_or_var_number_str = str(and_or_var_number)
+
+	line_replece('if variablename symbol userinput: #AndOrExtension'+and_or_var_number_str,'        #ifstatement\n')
+
+	and_or_counter(-1)
 
 	line_deletion('#elsestatement')
 
@@ -957,6 +977,9 @@ t6_canvas.tag_bind(t6_shape1, "<Button-3>", t6_button1_removal)
 def t6_button2_code(self):
 
 	statement_block_tally(1)
+	and_or_counter(1)
+
+	and_or_var_number_str = str(and_or_var_number)
 
 	global t6_shape2_on_canvas
 
@@ -964,9 +987,8 @@ def t6_button2_code(self):
 	t6_shape2_on_canvas = canvas.create_image(t6_points_on_canvas, image = t6_block2)
 
 	line_deletion('#response')
-	line_deletion('#AndOrExtension')
 
-	line_replece('#elsestatement','        elif variablename symbol userinput: #AndOrExtension\n')
+	line_replece('#elsestatement','        elif variablename symbol userinput: #AndOrExtension'+and_or_var_number_str+'\n')
 
 	line_addition('elif variablename symbol userinput','        #elsestatement\n')
 
@@ -980,9 +1002,13 @@ def t6_button2_removal(self):
 	statement_block_tally(0)
 	argument_point_mover(1)
 
+	and_or_var_number_str = str(and_or_var_number)
+
 	line_deletion('#response')
 
-	line_replece('elif variablename symbol userinput: #AndOrExtension','        #response\n')
+	line_replece('elif variablename symbol userinput: #AndOrExtension'+and_or_var_number_str,'        #response\n')
+
+	and_or_counter(-1)
 
 	canvas.delete(t6_shape2_on_canvas)
 
