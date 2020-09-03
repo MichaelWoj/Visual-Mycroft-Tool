@@ -20,15 +20,21 @@ https://github.com/MichaelWoj/Visual-Mycroft-Tool
 
 Changes from the summer deliverable:
 
-900+ more lines of code (146 vs 1076)
-22 more blocks
-Dynamic block placement
-Able to delete individual blocks and their code
-No limit to how big the skill is
-Signifiactly more block combination possibilities 
-Main canvas can be moved with the arrows on top
-Blocks are images instead of shapes being drawn on the canvas 
-Blocks have text on them describing their function
-Some blocks require user input eg. input date or response
+Research Manual:		None
+Functional Specification:	None
+Design Manual:			None
+Techincal Manual:		None
+Final Report:			None 
+
+Final Product : 900+ more lines of code (146 vs 1076)
+		22 more blocks
+		Dynamic block placement
+		Able to delete individual blocks and their code
+		No limit to how big the skill is
+		Signifiactly more block combination possibilities 
+		Main canvas can be moved with the arrows on top
+		Blocks are images instead of shapes being drawn on the canvas 
+		Blocks have text on them describing their function
+		Some blocks require user input eg. input date or response
 
 
