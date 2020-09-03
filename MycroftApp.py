@@ -842,7 +842,7 @@ def t4_button2_code(self):
 	global t4_shape2_on_canvas
 	global t4_button2_user_input
 
-	t4_button2_user_input = simpledialog.askstring("Sentance Response","Please enter the website url (include https//)")
+	t4_button2_user_input = simpledialog.askstring("Sentance Response","Please enter the website url (include https://)")
 
 	if t4_button2_user_input is None:
 		return
@@ -883,14 +883,14 @@ def t5_button1_code(self):
 	t5_points1_on_canvas = [70+point_adjustor, 250]
 	t5_shape1_on_canvas = canvas.create_image(t5_points1_on_canvas, image = t5_block1)
 
-	line_editor(': #AndOrExtension', ': #AndOrExtension', 'and #EmptyStatement :')
+	line_editor(': #AndOrExtension', ': #AndOrExtension', ' and #EmptyStatement:')
 
 	point_mover(-173)
 t5_canvas.tag_bind(t5_shape1, "<Button-1>", t5_button1_code)
 
 def t5_button1_removal(self):
 	
-	line_editor('and #EmptyStatement :', 'and #EmptyStatement :', ': #AndOrExtension')
+	line_editor('and #EmptyStatement:', 'and #EmptyStatement:', ': #AndOrExtension')
 
 	canvas.delete(t5_shape1_on_canvas)
 
@@ -904,16 +904,16 @@ def t5_button2_code(self):
 	global t5_shape2_on_canvas
 
 	t5_points2_on_canvas = [70+point_adjustor, 250]
-	t5_shape2_on_canvas = canvas.create_image(t5_points2_on_canvas, image = t5_block1)
+	t5_shape2_on_canvas = canvas.create_image(t5_points2_on_canvas, image = t5_block2)
 
-	line_editor(': #AndOrExtension', ': #AndOrExtension', 'or #EmptyStatement :')
+	line_editor(': #AndOrExtension', ': #AndOrExtension', ' or #EmptyStatement:')
 
 	point_mover(-173)
 t5_canvas.tag_bind(t5_shape2, "<Button-1>", t5_button2_code)
 
 def t5_button2_removal(self):
 	
-	line_editor('or #EmptyStatement :', 'or #EmptyStatement :', ': #AndOrExtension')
+	line_editor('or #EmptyStatement:', 'or #EmptyStatement:', ': #AndOrExtension')
 
 	canvas.delete(t5_shape2_on_canvas)
 
@@ -943,7 +943,7 @@ def t6_button1_removal(self):
 	statement_block_tally(0)
 	argument_point_mover(1)
 
-	line_replece('if variablename symbol userinput:','        #ifstatement\n')
+	line_replece('if variablename symbol userinput: #AndOrExtension','        #ifstatement\n')
 
 	line_deletion('#elsestatement')
 
@@ -964,8 +964,9 @@ def t6_button2_code(self):
 	t6_shape2_on_canvas = canvas.create_image(t6_points_on_canvas, image = t6_block2)
 
 	line_deletion('#response')
+	line_deletion('#AndOrExtension')
 
-	line_replece('#elsestatement','        elif variablename symbol userinput:\n')
+	line_replece('#elsestatement','        elif variablename symbol userinput: #AndOrExtension\n')
 
 	line_addition('elif variablename symbol userinput','        #elsestatement\n')
 
@@ -981,7 +982,7 @@ def t6_button2_removal(self):
 
 	line_deletion('#response')
 
-	line_replece('elif variablename symbol userinput:','        #response\n')
+	line_replece('elif variablename symbol userinput: #AndOrExtension','        #response\n')
 
 	canvas.delete(t6_shape2_on_canvas)
 
@@ -1039,7 +1040,7 @@ def t6_button4_removal(self):
 	statement_block_tally(0)
 	argument_point_mover(1)
 
-	line_editor('variablename symbol userinput', '#EmptyStatement', '#EmptyStatement')
+	line_editor('variablename symbol userinput', 'variablename symbol userinput', '#EmptyStatement')
 
 	canvas.delete(t6_shape4_on_canvas)
 
