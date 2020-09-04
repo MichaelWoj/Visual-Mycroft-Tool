@@ -1,5 +1,7 @@
 Hello and thank you for downloading the Visual Development Tool for Mycroft, here is a quick walkthrough to get you started.
 
+Quick reminder before we get started, this tool was developed for Linux and might not work on other operating systems. 
+
 Step 1. Activation
 
 To activate the application go to " MycroftProject " ("cd MycroftProject") or however you named the folder and in your command prompt type in " python3 MycroftApp.py" to run. 
