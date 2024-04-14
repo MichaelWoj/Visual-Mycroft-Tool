@@ -17,26 +17,3 @@ After you created your skill template, click " Select File " in the " Settings "
 Step 4. Create your skill.
 
 Once you have done the previous steps, click on the blocks that fit the description of the skill you wish to create. The code is saved automatically to the file when you click on the block. If you misclick or change your mind, right click on a block to get rid of it. Make sure to remove blocks in the order you placed them in otherwise it wont work
-
-https://github.com/MichaelWoj/Visual-Mycroft-Tool
-
-Changes from the summer deliverable:
-
-Research Manual:		None
-Functional Specification:	None
-Design Manual:			None
-Techincal Manual:		None
-Final Report:			None 
-Screencast Demo:		https://youtu.be/Qf3HRifQzBg (Backup)
-Final Product : 900+ more lines of code (146 vs 1076)
-		22 more blocks
-		Dynamic block placement
-		Able to delete individual blocks and their code
-		No limit to how big the skill is
-		Signifiactly more block combination possibilities 
-		Main canvas can be moved with the arrows on top
-		Blocks are images instead of shapes being drawn on the canvas 
-		Blocks have text on them describing their function
-		Some blocks require user input eg. input date or response
-
-
